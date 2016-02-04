@@ -94,7 +94,7 @@ div.panel h2,h4 {
 
 div.panel {
 	min-width:500px;
-	background: url("/game/img/techhex.png") no-repeat center center;
+	background: url("img/techhex.png") no-repeat center center;
 	background-size: cover;
 	font-size: 2em;
 	color: #DDEEFF;
