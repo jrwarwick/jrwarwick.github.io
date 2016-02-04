@@ -1,0 +1,419 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+	<!-- Author: justin.warwick@gmail.com, Oct. 2015 -->
+	<!-- Copyright (c) 2015 Justin Warwick -->
+	<!-- Distributed under the MIT license; see LICENSE.txt -->
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Game Master Console - Game Tools</title>
+        <meta name="description" content="out-loud audible count down and more for games like LazerTag in a simple single-page mini-app">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+	<!-- choose just one or two... <link href='http://fonts.googleapis.com/css?family=Special+Elite|Nova+Square|Forum|Metamorphous|Iceland' rel='stylesheet' type='text/css'> -->
+	<link href='http://fonts.googleapis.com/css?family=Iceland' rel='stylesheet' type='text/css'> 
+        <link rel="stylesheet" href="/game/css/normalize.min.css">
+        <link rel="stylesheet" href="/game/css/main.css">
+
+        <!--[if lt IE 9]>
+            <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+            <script>window.html5 || document.write('<script src="js/vendor/html5shiv.js"><\/script>')</script>
+        <![endif]-->
+    </head>
+    <body>
+	<div class="panel">
+		<h1>GAME MASTER CONSOLE</h1>
+		<h2>GAME ROUND: <span id="roundcount">0</span>/<span id="roundmaxcount">0</span></h2>
+		<h4>MISSION TIME: <span id="missiontime" data-seconds="0">00:00:00</span></h4>
+		<button id="btnCountDown">BEGIN COUNTDOWN</button>
+		<button id="btnTerminateMission">TERMINATE MISSION</button>
+		<fieldset id="randomizationControls">
+			<legend>RANDOMIZED</legend>
+			<button id="btnFlipacoin">COIN-FLIP</button>
+			<button id="btnRandomTeams">TEAM ASSIGNMENT</button>
+			<button id="btnKeywordSelect">SELECT KEYWORD</button>
+		</fieldset>
+		<!--<button id="btnSysLock">ENGAGE SYSTEM LOCK</button>
+-->
+
+		<p id="bigdisplay">0</p>
+		<table id="gameparameters">
+			<tr><td>Max Rounds:</td><td> <span id="maxrounds">0</span></td><td><button id="btnMaxroundsSub">&lt;</button></td><td><button id="btnMaxroundsAdd">&gt;</button></td></tr>
+
+			<tr><td>Countdown:</td><td> <span id="tminus">12</span> sec.</td><td><button id="btnTminusSub">&lt;</button></td><td><button id="btnTminusAdd">&gt;</button></td></tr>
+			<tr><td>Mission Timelimit:</td><td><span id="missiontimelimit" data-minutes="0">00:00:00</span></td><td><button id="btnMissiontimelimitSub">&lt;</button></td><td><button id="btnMissiontimelimitAdd">&gt;</button></td></tr>
+			<tr><td>Mission Timelimit Randomize:</td><td><span id="missiontimelimitadj">Inactive</span></td><td><button id="btnMissiontimelimitadjSub">&lt;</button></td><td><button id="btnMissiontimelimitadjAdd">&gt;</button></td></tr>
+			<tr><td>Change-sides Period:</td><td><span id="changesidesperiod">2</span></td><td><button id="btnChangesidesperiodSub">&lt;</button></td><td><button id="btnChangesidesperiodAdd">&gt;</button></td></tr>
+			<tr><td>Player Count:</td><td> <span id="playercount">4</span></td><td><button id="btnPlayerCountSub">&lt;</button></td><td><button id="btnPlayerCountAdd">&gt;</button></td></tr>
+			<tr><td>Game Format:</td><td><span id="activeMode">CTF</span></td><td><button id="btnGameformatBack">&lt;</button></td><td><button id="btnGameformatForward">&gt;</button></td></tr>
+			<!--
+			<tr><td>:</td><td><span id="">0</span></td><td><button id="btn">&lt;</button></td><td><button id="btn">&gt;</button></td></tr>
+			-->
+		</table>
+		<div id="formatrules" class="description">
+			<ul></ul>
+		</div>
+		<div id="rulebook">
+			<ul>
+				<li>
+					<h4>Capture the Flag - <span class="abbrevTag">CTF</span></h4>
+					<p>
+					Teams (usually two) divide the field evenly. Each team has a base and in the base, a flag. 
+					</p>
+					<p>
+					Objective: infiltrate the opposing team's base, retrieve their flag and bring it back to your base. At that point, the game ends and the capturing team wins. 
+					</p>
+					<p>
+					Variation: capture cannot be consummated unless both flags are present in the base.
+					</p>
+					<p>
+					Tournament Scoring: 8 points for flag capture.
+					</p>
+				</li>
+				<li>
+					<h4>King of the Hill - <span class="abbrevTag">KOTH</span></h4>
+					<p>
+					Setup: Teams start at a distance from a central objective location.
+					</p>
+					<p>
+					Objective: capture the objective location and then hold it; maintain control of the location as long as possible. Score is length of time in ownership of the objective, or some other secondary measure that is proportional to duration of ownership. Highest score wins. 
+					</p>
+					<p>
+					Variation: if a slightly randomized mission termination time can be established with auto-notification, then there is no need to count scores. Instead, whichever team happens to be in control at termination time is declared victor and King of the Hill. 
+					</p>
+					<p>
+					Variation: if a device that can &quot;lay eggs&quot; every minute or so is available, control can be certified by having the controlling team collecting and depositing these egg/tokens into a team-owned receptacle. This might literally be poker chips or balls, or it might be codes generated periodically and entered into a control panel for redemption.
+					</p>
+					<p>
+					Tournament scoring: 1 point for every complete minute of objective ownership.
+					</p>
+				</li>
+				<li>
+					<h4>Borg Assimilation - <span class="abbrevTag">BORG</span></h4>
+					<p>
+					Setup: Two players (maybe on in a small group) are designated the Borg. Everyone else are resisting humans. Extra coolness if the starting Borg announce: &quot;We are the Borg. You will be assimilated. Resistance is futile.&quot;
+					</p>
+					<p> 
+					Objective: the Borg objective is to &quot;assimilate&quot; all living organisms. This is achieved through open-hand touch by the Borg after the human target is neutralized (all tagger tag/hits depleted). Once assimilated, the player is now one of the Borg! Borg respawn automatically after one minute in the &quot;regeneration&quot; zone. Humans must be dragged and/or carried back to the sickbay for revival. There is no way to reverse the Borg assimilation.
+					Game ends when the last human is assimilated, or when mission timer expires. 
+					</p>
+					<p>
+					Variation: Borg are outfitted with two personal flags at assimilation time. Regenerations take 3 - n minutes to complete, where n is how many personal flags remain on the Borg's person.
+					</p>
+					<p> 
+					Tournament Scoring: 5 points for being the last human assimilated, 5 points each for all players not yet assimilated when mission timer expires. For those already assimilated, everyone shares one pool of points, uniformly, 
+					</p>
+				</li>
+				<li>
+					<h4>Free for All - <span class="abbrevTag">FFA</span></h4>
+					<p>
+					Setup: taggers on &quot;Solo&quot; mode. Everyone scatters during countdown. If respawn variation is added, distribute one respawn token to each player prior to launch.
+					</p>
+					<p>
+					Objective: No allies, each one is on their own. Last player standing wins. Variation: 1 respawn per player, restricted to the first 2 minutes of mission time. 
+					</p>
+					<p>
+					Tournament Scoring: winner receives 5 points.
+					</p>
+				</li>
+				<li>
+					<h4>Team Elimination - <span class="abbrevTag">TE</span></h4>
+					<p>
+					Setup: all players are divided into two teams. Teams separate into starting positions.
+					</p>
+					<p>
+					Objective: Eliminate all players of opposing team. Variation: allow respawns, or allow respawns only if active &quot;medic&quot; assists. Respawns can also be limited by resource tokens in limited supply.
+					</p>
+					<p> Tournament Scoring: winning team is awarded points equal to the number of opposing team members eliminated; if mission time expires before total elimination, scoring is the same, except both sides are eligible for points.
+					</p>
+				</li>
+				<li>
+					<h4>Password - <span class="abbrevTag">PW</span></h4>
+					<p> Setup: each team chooses a five-letter word, which must be a common dictionary word, approved by gamemaster. Each player receives a card with one of the letters of the password on it. If there are more letters in the password than there are players on the team, one of team members will have to carry the additional letters. 
+					</p>
+					<p> Objective: Players must collect the letters of the password and correctly reorder them into the correct password to &quot;crack&quot; the security of the opposing team, achieving victory.
+					</p>
+					<p> Tournament Scoring: 1 point for each letter in the decoded word (and therefore a standard form game will award 5 points to the victor).
+					</p>
+				</li>
+				<li>
+					<h4>Very Important Person - <span class="abbrevTag">VIP</span></h4>
+					<p> Setup: Asymmetric teams: team VIP has one extra-special designated and clearly identified &quot;VIP&quot; team member. 
+					</p>
+					<p> Objective: If the VIP is eliminated, team VIP instantly loses. This team may wish to assign some &quot;bodygards&quot; to stay close to the VIP player. The opposing team merely needs to seek out and eliminate the VIP player. If mission expiration time is reached, and the VIP has not been eliminated, then team VIP wins. Variation: an alternative end-game condition: VIP is safely brought to a designated evacuation zone.
+					</p>
+					<p> Tournament Scoring: 2 points for eliminating the VIP, 3 points for successfully protecting the VIP. To ensure fairness in an asymmetric format, each team must take a turn at being team VIP.
+					</p>
+				</li>
+				<!--
+				<li>
+					<h4>- <span class="abbrevTag">XYZ</span></h4>
+					<p>
+					Setup:
+					</p>
+					<p>
+					Objective: 
+					</p>
+				</li>
+				-->
+			</ul>
+		</div>
+
+	</div>
+
+	<button id="btnCredits">CREDITS</button>
+	<div id="credits">
+		<p>&copy; 2015 by justin.warwick@gmail.com for the non-commercial enjoyment of all. Originally envisioned for facilitating LAZER TAG &trade; games. Probably good for NERF &trade; too or squirtguns even.</p>
+		<p>
+		&quot;Borg&quot; and catch phrase comes from Star Trek, and its copyright owners.
+		</p>
+		<p>
+		This web application original sounds, distribued with a CreateiveCommons license.
+		</p>
+		<p>
+		Source available at https://github.com/jrwarwick/game-referee
+		</p>
+	</div>
+<!-- AUDIO 
+	   <source src="audio/soggy.ogg" type='audio/ogg; codecs="vorbis"'>
+-->
+	<audio id="aBeepMark">
+	   <source src="audio/count.m4a" type="audio/mp4" />
+	   <source src="audio/count.mp3" type="audio/mpeg; codecs='mp3'" />
+	</audio>
+	<audio id="aLaunch">
+	   <source src="audio/reset.m4a" type="audio/mp4" />
+	   <source src="audio/reset.mp3" type="audio/mpeg; codecs='mp3'" />
+	</audio>
+	<audio id="aChurn">
+	   <source src="audio/shakeup.m4a" type="audio/mp4" />
+	   <source src="audio/shakeup.mp3" type="audio/mpeg; codecs='mp3'" />
+	</audio>
+	<audio id="aBootup">
+	   <source src="audio/powerup.m4a" type="audio/mp4" />
+	   <source src="audio/powerup.mp3" type='audio/mpeg; codecs="mp3"' />
+	</audio>
+	<audio id="aTrade">
+	   <source src="audio/switchsides.m4a" type="audio/mp4" />
+	   <source src="audio/switchsides.mp3" type="audio/mpeg; codecs='mp3'" />
+	</audio>
+	<audio id="aTerminate">
+	   <source src="audio/terminate.m4a" type="audio/mp4" />
+	   <source src="audio/terminate.mp3" type='audio/mpeg; codecs="mp3"' />
+	</audio>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+
+        <script src="/game/js/main.js"></script>
+	<script>
+		//EVENTS
+		$(document).on('ready',function(){
+			var aBootup = document.getElementById('aBootup');
+			aBootup.play();
+
+			//$("ul","#formatrules").append($("ul li:first","#rulebook").html());
+			g_rulebook = $("ul li", "#rulebook").toArray();
+			$("ul","#formatrules").append(g_rulebook[0]);
+
+			$.getJSON("pentagrammatons.json", function(data){
+				console.log(" json data: " + data);
+				g_wordlist = data.pentagrammatons.nouns;
+			});
+		});
+
+		$("#btnCountDown").on('click',function(){
+			var rcount = parseInt($("#roundcount").html()) + 1;
+			//$("#roundcount").html(parseInt($("#roundcount").html()) + 1);
+			$("#roundcount").html(rcount);
+			if ((rcount > 0) && !(rcount % parseInt($("#changesidesperiod").html()))) {
+				//var aTrade = document.getElementById('aTrade');
+				//aTrade.play();
+				document.getElementById('aTrade').play();
+				console.log("Change sides! Issue announcement.");
+				var disp = $("#bigdisplay");
+				disp.html("CHANGE SIDES!");
+				disp.fadeOut().fadeIn();
+			}
+			beginCountDown(parseInt($("#tminus").html()));
+		});
+		$("#btnTerminateMission").on('click',function(){
+			terminateMission();
+		});
+
+
+		$("#btnFlipacoin").on('click',function(){
+			var disp = $("#bigdisplay");
+			var dispval=['HEADS','TAILS'];
+			var aChurn = document.getElementById('aChurn');
+			disp.fadeOut(200);
+			aChurn.play();
+			for (i = 1; i < Math.floor(Math.random() * 20) + 20; i++) {
+				//disp.html(dispval[i % 2]);
+				console.log(i + ":" + (i % 2));
+			}
+			disp.html(dispval[i % 2]).fadeIn(200);
+			//TODO: audible "HEADS" and "TAILS"
+		});
+
+		$("#btnRandomTeams").on('click',function(){
+			var disp = $("#bigdisplay");
+			var aChurn = document.getElementById('aChurn');
+			var remainingPlayers = new Array(parseInt($("#playercount").html()));
+			var alpha=[];
+			var bravo=[];
+			var alternator = 0;
+		
+			aChurn.play();
+
+			for (var i = 0 ; i < remainingPlayers.length ; i++) {
+				remainingPlayers[i] = i+1;
+			}
+			while (remainingPlayers.length > 0) {
+				var playerSlotNum = Math.floor(Math.random() * remainingPlayers.length);
+				console.log('selecting player ' + remainingPlayers[playerSlotNum] + ' from slot ' + playerSlotNum);
+				console.log(alternator + " % 2 = " + (alternator % 2))
+				if (alternator % 2) {
+					alpha.push(remainingPlayers[playerSlotNum]);
+				} else {
+					bravo.push(remainingPlayers[playerSlotNum]);
+				}
+				remainingPlayers.splice(playerSlotNum,1);
+				alternator ++;
+			}
+			
+			//disp.text('ALPHA: ' + alpha.join(',') + '  vs.  BRAVO: ' + bravo.join(','));
+			console.log('ALPHA: ' + alpha.join(',') + '  vs.  BRAVO: ' + bravo.join(','));
+			disp.text(alpha.join(',') + ' vs. ' + bravo.join(','));
+		});
+
+		$("#btnSysLock").on('click',function(){
+			//show secret key entry, save value
+			//hide or "disable" lock button
+			//show or "enable" unlock button
+			//or just use one button and have it toggle label text?
+		});
+		$("#btnKeywordSelect").on('click',function(){
+			var disp = $("#bigdisplay");
+			aChurn.play();
+			disp.text(g_wordlist[Math.floor(Math.random() * g_wordlist.length)].toUpperCase());
+		});
+
+		$("#btnChangesidesperiodAdd").on('click',function(){
+			var prd = $("#changesidesperiod");
+			prd.html(parseInt(prd.html()) + 1);
+		});
+		$("#btnChangesidesperiodSub").on('click',function(){
+			var prd = $("#changesidesperiod");
+			var tval= parseInt(prd.html()) - 1;
+			if (tval < 0) {
+				tval = 0;
+			}
+			prd.html(tval);
+		});
+
+
+		$("#btnMaxroundsAdd").on('click',function(){
+			var mr = $("#maxrounds");
+			mr.html(parseInt(mr.html()) + 1);
+		});
+		$("#btnMaxroundsSub").on('click',function(){
+			var mr = $("#maxrounds");
+			var tval= parseInt(mr.html()) - 1;
+			if (tval < 0) {
+				tval = 0;
+			}
+			mr.html(tval);
+		});
+
+
+		$("#btnTminusAdd").on('click',function(){
+			var tm = $("#tminus");
+			tm.html(parseInt(tm.html()) + 1);
+		});
+		$("#btnTminusSub").on('click',function(){
+			var tm = $("#tminus");
+			var tval= parseInt(tm.html()) - 1;
+			if (tval < 0) {
+				tval = 0;
+			}
+			tm.html(tval);
+		});
+
+
+		$("#btnMissiontimelimitSub").on('click',function(){
+			var mt = $("#missiontimelimit");
+			var min = mt.data("minutes") - 1;
+			if (min < 0) {
+				min = 0;
+			}
+			mt.data("minutes",min);
+			mt.html( ('0' + Math.floor(min / 60)).substr(-2) +':'+ ('0'+(min % 60)).substr(-2) + ':00');
+		});
+		$("#btnMissiontimelimitAdd").on('click',function(){
+			var mt = $("#missiontimelimit");
+			var min = mt.data("minutes") + 1;
+			if (min >= 99*60) {
+				min = 99*60 -1;
+			}
+			mt.data("minutes",min);
+			mt.html( ('0' + Math.floor(min / 60)).substr(-2) +':'+ ('0'+(min % 60)).substr(-2) + ':00');
+		});
+
+		$("#btnMissiontimelimitadjSub").on('click',function(){
+			var mtadj = $("#missiontimelimitadj");
+			if (mtadj.html().match(/inactive/i)) {
+				mtadj.html("Active&nbsp;");
+			} else {
+				mtadj.html("Inactive");
+			}
+		});
+		$("#btnMissiontimelimitadjAdd").on('click',function(){
+			var mtadj = $("#missiontimelimitadj");
+			if (mtadj.html().match(/inactive/i)) {
+				mtadj.html("Active&nbsp;");
+			} else {
+				mtadj.html("Inactive");
+			}
+		});
+
+
+		$("#btnPlayerCountAdd").on('click',function(){
+			var pc = $("#playercount");
+			pc.html(parseInt(pc.html()) + 1);
+		});
+		$("#btnPlayerCountSub").on('click',function(){
+			var pc = $("#playercount");
+			var tval= parseInt(pc.html()) - 1;
+			if (tval < 0) {
+				tval = 0;
+			}
+			pc.html(tval);
+		});
+
+		$("#btnGameformatForward").on('click',function(){
+			g_rulebook_idx = (g_rulebook_idx + 1) % (g_rulebook.length );
+			$("ul","#formatrules").html(g_rulebook[g_rulebook_idx]);
+			$("#activeMode").html( $("ul li .abbrevTag","#formatrules").html());
+		});
+		$("#btnGameformatBack").on('click',function(){
+			g_rulebook_idx = ((g_rulebook.length + g_rulebook_idx) - 1) % g_rulebook.length;
+			$("ul","#formatrules").html(g_rulebook[g_rulebook_idx]);
+			$("#activeMode").html( $("ul li .abbrevTag","#formatrules").html());
+		});
+
+
+		$("#btnCredits").on('click',function(){
+			$("#credits").toggle();
+		});
+
+
+		//GLOBALS
+                var g_mcitid ; //= window.setInterval(function() { }, 1000);
+		var g_rulebook ;
+		var g_rulebook_idx =0 ;
+		var g_wordlist ;
+	</script>
+    </body>
+</html>

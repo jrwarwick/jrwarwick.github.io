@@ -1,0 +1,45 @@
+==TODO
+	appcache-ify
+	switching sound (404)
+
+	embedded fallback if failure of AJAX grab wordlists
+	number of letters in randomized words respects number of players selected 
+	optional server repeater so players can hook in and receive notifications of events, maybe comms
+
+	master deadline/alarm (so everyone gets home on time and has time to help clean up)
+	round limiting,
+	change-sides announcement,
+		interval, double countdown or require ACK.
+
+	atmospheric sound and/or musical soundtrack
+	optional consumption of Text-to-speech RESTful service (if internet available)
+		http://www.technorms.com/980/top-10-web-based-services-for-text-to-speech-conversion
+
+	alpha/bravo team:
+		naming (default "alpha", "bravo")
+		color selection
+		password setting (at beginning of game) and password entry/checking after game is in motion
+		scorekeeping
+		limited resource consumption tracking
+		randomized membership (number off individuals, console assigns random, even-as-possible teams by number)
+	talleys
+		limited resource consumption
+		scores
+	redo time randomization for timelimit in 5% increments * totaltimelimit level of randomness
+
+	webcam QR code read on interval. 
+		Credit points to the team whose QR code is in place. (KotH mechanism)
+		individual bandannas with TEAM#.PLAYER# code in them, once read, that player is truly out, recorded and announced. Before that time, bandanna is recoverable and restorable to player.
+	password/secret key set and entry check to see if player "infiltrated and stole the key" or "hacked" successfully. This would require the defending team to fairly have the password in a physical document and protected. each player has one letter on their person. each team can have a keyword. or gamemaster can hide letter clues ahead of time. Variation on CTF, really.
+
+	Twitter integration: matchup invitations? or match outcomes announcements? or some kind of sentiment analysis/trending key type of thing that somehow generates a goal
+
+
+
+
+==DONE
+	AJAX grab wordlists
+	fieldset with legend for randomizing buttons, remove the word "random" from the button texts
+	Maybe a swipable list of classic game types (CTF,KOTH,DM,VIP,deCode,texas flag hunt, borg/assimilation,LARP) and brief canonical rulesets.
+	readme, license, robots.txt
+	dictionary of 5-letter words
