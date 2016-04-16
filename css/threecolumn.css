@@ -1,0 +1,129 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans);
+
+body { 
+  font-family: 'Open Sans', sans-serif;
+  color: #666;
+}
+
+/* STRUCTURE */
+
+#pagewrap {
+	padding: .25em;
+	width: 80%;
+	margin: 4em auto;
+}
+header {
+	min-height: 6em;
+	padding: 0 1em;;
+}
+header h1,h2 {
+	text-align: center;
+}
+#content {
+	width: 25%;
+	float: left;
+	padding: .25em .5em;
+}
+
+#middle {
+	width: 42%; /* Account for margins + border values */
+	float: left;
+	padding: .25em .5em;
+	margin: 0em .25em .25em .25em;
+}
+
+#sidebar {
+	width: 25%;
+	padding: .25em .5em;
+	float: left;
+}
+footer {
+	clear: both;
+	font-size: .5em;
+	padding: 0em 2em .5em 2em;
+	margin: -.25em;
+}
+
+/************************************************************************************
+MEDIA QUERIES
+*************************************************************************************/
+/* for 980px or less */
+@media screen and (max-width: 980px) {
+	
+	#pagewrap {
+		width: 94%;
+	}
+	#content {
+		width: 41%;
+		padding: 1% 4%;
+	}
+	#middle {
+		width: 41%;
+		padding: 1% 4%;
+		margin: 0px 0px 5px 5px;
+		float: right;
+	}
+	
+	#sidebar {
+		clear: both;
+		padding: 1% 4%;
+		width: auto;
+		float: none;
+	}
+
+	header, footer {
+		padding: 1% 4%;
+	}
+}
+
+/* for 700px or less */
+@media screen and (max-width: 600px) {
+
+	#content {
+		width: auto;
+		float: none;
+	}
+	
+	#middle {
+		width: auto;
+		float: none;
+		margin-left: 0px;
+	}
+	
+	#sidebar {
+		width: auto;
+		float: none;
+	}
+
+}
+
+/* for 480px or less */
+@media screen and (max-width: 480px) {
+
+	header {
+		height: auto;
+	}
+	h1 {
+		font-size: 2em;
+	}
+	#sidebar {
+		display: none;
+	}
+
+}
+
+
+#content {
+	background: #f8f8f8;
+}
+#sidebar {
+	background: #f0efef;
+}
+header, #content, #middle, #sidebar {
+	margin-bottom: 5px;
+}
+
+#pagewrap, header, #content, #middle, #sidebar, footer {
+	border: solid 1px #D8D4D2;
+}
+

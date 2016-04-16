@@ -1,7 +1,9 @@
 /*! HTML5 Boilerplate v5.0 | MIT License | http://h5bp.com/ */
 
-@import url(https://fonts.googleapis.com/css?family=Martel|Pathway+Gothic+One|Donegal+One|Milonga|Strait);
+@import url(https://fonts.googleapis.com/css?family=Martel|Pathway+Gothic+One|Donegal+One|Strait);
 /*
+@import url(https://fonts.googleapis.com/css?family=Martel|Pathway+Gothic+One|Donegal+One|Milonga|Strait);
+
 font-family: 'Martel', serif;
 font-family: 'Pathway Gothic One', sans-serif;
 font-family: 'Donegal One', serif;
@@ -70,13 +72,26 @@ body {
 	margin:2em;
 	font-family: 'Donegal One', serif;
 	font-size:1.5em;
+	background-color: #FBF9F6;
 }
 h1 {
-	font-family: 'Milonga', cursive;
+	font-family: 'Martel', serif;
 	font-size:2.5em;
+}
+a:link {
+	font-weight:bold;
+	color: #353C88;
+}
+a:visited {
+	font-weight:bold;
+	color: #222244;
+}
+#footer {
+	font-size: .5em;
 }
 
 /*
+	font-family: 'Milonga', cursive;
 font-family: 'Martel', serif;
 font-family: 'Pathway Gothic One', sans-serif;
 font-family: 'Strait', sans-serif;
