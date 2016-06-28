@@ -1,0 +1,741 @@
+<!DOCTYPE html> 
+ <!--------------------------------------------------------------------
+|	TaskBurner: Super Simple Clientside-only Task Management       ^
+|	Copyright 2015 - Justin Warwick                                |
+|	Dominiumentis Consulting                                       |
+V	justin.warwick@dominiumentis.com                               |
+ --------------------------------------------------------------------->
+<html manifest="taskburner.appcache">
+<head>
+	<link href='http://fonts.googleapis.com/css?family=Scada|Vollkorn|Signika|Quando' rel='stylesheet' type='text/css'>
+	<!--<link href='http://fonts.googleapis.com/css?family=Archivo+Narrow|Scada|Quando' rel='stylesheet' type='text/css'>-->
+	<link href="taskburner.css" rel="stylesheet" type="text/css" />
+	<link href="jquery.mobile.css" rel="stylesheet" type="text/css" />
+	<link rel="icon" type="image/png" href="burner.png?v=2"  />
+	<link rel="shortcut icon" type="image/x-icon" href="/taskburner/favicon.ico"  />
+	<title>TaskBurner</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<script src="./jquery.js"></script>
+	<script src="./jquery.mobile.js"></script> 
+	<script src="./taskburner.util.js"></script> 
+	<script>
+/*
+	    function fb_bookmarklet(F,i,r,e,b,u,g,L,I,T,E){
+		   if(F.getElementById(b))
+		       return;
+		   E=F[i+'NS']&&F.documentElement.namespaceURI;
+		   E=E?F[i+'NS'](E,'script'):F[i]('script');
+		   E[r]('id',b);
+		   E[r]('src',I+g+T);E[r](b,u);
+		   (F[e]('head')[0]||F[e]('body')[0]).appendChild(E);
+		   E=new Image;
+		   E[r]('src',I+L);
+	       }
+		//onclick="bookmarklet(document,'createElement','setAttribute', 'getElementsByTagName','FirebugLite','4','firebug-lite.js', 'firebug-lite/skin/xp/sprite.png','./','#startOpened');" 
+*/
+	/*
+	    $(document).ready(function() {
+		   fb_bookmarklet(document,'createElement','setAttribute',
+		       'getElementsByTagName','FirebugLite','4','firebug-lite.js',
+		       'releases/lite/latest/skin/xp/sprite.png','https://getfirebug.com/','#startOpened');
+	    });         
+	*/
+	</script>
+	<script>
+		$.mobile.loadingMessage = false;
+		$(document).ready( function(){
+
+//TODO: hidable mini-manual in two mini-segments: "handdrawn" iconish explanations/demos of interactions (swipe-off, swipe-back, destroy)
+//		and a precis on this variant of G.E.D. (actual <OL> with "scan list, no actions; select move items to end, destroy only if completely done)
+//		GTD/ once I realized other people already had this idea, then I thought well I'll be first to make software for it. Well, others beat me to that too, by five or six years :\ well, anyway, here is YOTL .
+//TODO: export to data URI, and import from whatever a data URI becomes on the client.
+//		should sanity check the import before shoving into the doc <li> in pairs? illegal chars? merged style attributes (that are valid syntatically, but shouldnt be there)? Offer to clean it up maybe?
+//TODO: backburner UI method for switching context/focus? or do we strictly require a task to "enter the FronBurner" before it is worked on?
+//TODO: http://stackoverflow.com/questions/4973339/jquery-ui-draggable-sortable-get-reference-to-new-item
+//TODO: reevaluate doubleclick action. it is direct, but what if you want to doubleclickselect a word? maybe offer optional disable this action and/or add tripleclick.
+//TODO: add a cross-out-grey-out-fadeout animation to the removal
+//TODO: THEN an automagicool tickler/reminder/suggester that keeps a few stats on each item and heuristically makes a suggestion bubble
+//	stats: created, last cycled, cycle-count, due date/deadline, 
+//TODO: config option section "cosmetics" with:  
+//		backburner is : same size, faded and small, tiny and nearly invisible
+//		font choice: monospace or current awesome font
+//		customish bullets/numbering. maybe:
+/*
+		&ndash;
+		&mdash;
+		&not;
+		&boxdr;
+		&lhard;
+		&diam;
+		&loz;
+		&sdot;
+		&sstarf;
+		&rtrif;
+		&rtri;
+		&cir;
+		&sext;
+*/
+//TODO: download to: CSV, XML, VTODO (RFC2445)
+//TODO: export to ical:  http://www.ietf.org/rfc/rfc2445.txt
+//	updated: http://tools.ietf.org/html/rfc5545#section-3.6.2
+//	http://www.kanzaki.com/docs/ical/vtodo.html
+//	https://blogs.oracle.com/arnaudq/entry/vtodo_with_due_date_in
+//TODO: push/export to: dropbox, googledocs, googlekeep, gmailtasklist
+//	http://www.ietf.org/rfc/rfc2445.txt , http://en.wikipedia.org/wiki/ICalendar#To-do_.28VTODO.29
+//TODO: deadline storage, notification (time-resolution sensitive, 
+//		if hour specified, turn red an hour before. if day-resolution only turn red a day before 
+//		deadline parsing. Maybe also a wee little popup.
+//		consider data- attributes for deadline storage. also roundtrip counting, date created, priority
+//TODO: new attributes: time spent: last session and cummulative. this leads to creating a quick side-panel with a simple stopwatch that records to the current task, updating every five minutes.
+//	add new block to the delete-item process: iff data-cummulative-time attribute exists, make a localstorage entry, appending to  "TimeLog". possibly popup prompt for an abbreviated variation on the task name/desc if it exceeds 50 characters.
+//TODO: a full data- attribute reference/catalog. Also, confirmation that we are preserving them on append,insert,re-edit-loads-intoinputbox
+//TODO: method to reveal/view time log info
+//TODO: ms outlook copy and paste format (headerline, split on tabs):
+//TODO: offer/conform more to http://archive.constantcontact.com/fs004/1100358239599/archive/1109511856508.html  (ITS MORE HIP)
+//TODO: on Import of export: IFF current list is not empty, ask if user wants to APPEND or REPLACE the lists
+
+// for datestimes, use jquery .data():  http://stackoverflow.com/questions/7261619/jquery-data-vs-attr
+
+//TODO: Copy and paste is hindered by swipe motions. Offer some alternative or something. Maybe a button that temporarily diables swipes?
+//TODO: built-in backups. Just copy to backup_frontBurner at (logical): exit, sunset, mod 10 items entered
+//TODO: escaping of html entities and stuff in content
+//TODO: mobileize? only when mobile?
+//	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) { // some code..  }
+
+//TODO: editing. in situ? Currently: left-swipe gesture deletes but fills it into the entry box.
+
+//TODO: sanitize and/or escape specials in inputBox input. DONE, but test more extensively and methodially.
+
+			//Initializations
+			$.mobile.ajaxEnabled=false;
+			window.console && console.log( "initializing from localStorage:\n" + 
+				localStorage.getItem("frontBurner") + "\n\n" +
+				unescapeJSON( localStorage.getItem("frontBurner"))
+			);
+
+			$("#frontBurner").html(unescapeJSON(localStorage.getItem("frontBurner")));
+			$("#backBurner").html(unescapeJSON(localStorage.getItem("backBurner")));
+
+			$("#appage").on("pageinit",function(ev){
+				$("#totalReset").button('disable'); 
+				//$("#exportDownload").fadeOut(10); //seems to mess with state of "real boy" buttons
+				$("#downloadCtl").fadeOut(10); //seems to mess with state of "real boy" buttons, so make sure to manage from a container element.
+
+				$('[name=exportFormat][value="ICAL"]',"#appConfig").attr('disabled', 'disabled').checkboxradio("refresh");
+				$('[name=exportFormat][value="xml"]',"#appConfig").attr('disabled', 'disabled').checkboxradio("refresh");
+			});
+
+
+			//Chrono Events
+			//TODO: initialize backup reminder timer
+			//TODO: initialize deadline check/notify timer
+			var backupReminderTID = setTimeout(backupReminder,1000*3); //initial check in 5 seconds
+
+			//UI Events and Logic
+			//TODO: try using ** delegate() ** INSTEAD of these .on bindings...
+			//		http://api.jquery.com/delegate/
+////			$("#frontBurner li").on("dblclick swiperight", function(ev){
+////				window.console && console.log("delete interaction:"+ev.target);
+////				//window.console && console.log(ev.target.nodeName);
+////				$(ev.target).css("text-decoration","strikethrough").fadeOut(800).remove();
+////				//$(ev.target).remove();
+////				listStore("frontBurner", $("#frontBurner").html() );
+////			} );	
+			$("#inputAppend").on("click", function(ev){
+				listAppend(); 
+				$("#inputBox").delay(150).focus(); });
+			$("#inputPrepend").on("click", function(ev){
+				listPrepend(); 
+				$("#inputBox").delay(150).focus(); 
+				if($('#timeaccumdisplay-arm').val() == "on") {
+					var topitem = $("li:first-child","#frontBurner");
+					topitem.append(' <sup class="micronote">' + topitem.attr("data-session-time") + '</sup>');
+				}
+			});
+			
+			$("#frontBurner").on("dblclick swiperight", "li", function(ev){
+				window.console && console.log("delete interaction:"+ev.target);
+				//window.console && console.log(ev.target.nodeName);
+				$(ev.target).css("text-decoration","strikethrough").fadeOut(800).remove();
+				//$(ev.target).remove();
+				listStore("frontBurner", $("#frontBurner").html() );
+			} );	
+
+			$("#frontBurner").on("swipeleft", "li", function(ev){
+				window.console && console.log("leftswipe:"+ev.target);
+				//window.console && console.log(ev.target.nodeName);
+				var inputBox;
+				inputBox = $("#inputBox");
+				$("sup", ev.target).remove();
+				inputBox.val( inputBox.val() + " " + $(ev.target).text());
+				inputBox.attr("data-session-time", $(ev.target).attr("data-session-time")); //Preserve attributes that 
+				$(ev.target).fadeOut(800).remove();
+				//$(ev.target).remove(); //instead of chained??
+				inputBox.focus();
+				window.console && console.log(inputBox.val().length);
+				inputBox.selectionStart = inputBox.val().length -1;
+				inputBox.selectionEnd = inputBox.val().length -1;
+				//HUH? what is this, probably a mistake.//listStore("frontBurner", inputBox.html() );
+				listStore("frontBurner", $("#frontBurner").html() );
+/*
+				$("#inputBox").val($(ev.target).text());
+				$(ev.target).fadeOut(800);
+				$(ev.target).remove();
+				$("#inputBox").focus();
+				listStore("frontBurner", $("#frontBurner").html() );
+*/
+			} );	
+			$("#frontBurner").on("taphold", "li", function(ev){
+				window.console && console.log("taphold:"+ev.target);
+				//window.console && console.log(ev.target.nodeName);
+				$("#backBurner").append("<li>"+$(ev.target).html()+"</li>");
+				//Register all the interactions for this new list member
+				$(ev.target).fadeOut(1000);
+				$(ev.target).remove();
+				listStore("frontBurner", $("#frontBurner").html() );
+				listStore("backBurner", $("#backBurner").html() );
+				
+			} );	
+			$("#backBurner").on("taphold", "li", function(ev){
+				window.console && console.log("taphold:"+ev.target);
+				//window.console && console.log(ev.target.nodeName);
+				$("#frontBurner").append("<li>"+$(ev.target).html()+"</li>");
+				$(ev.target).fadeOut(1000);
+				$(ev.target).remove();
+				listStore("frontBurner", $("#frontBurner").html() );
+				listStore("backBurner", $("#backBurner").html() );
+				
+			} );	
+			//TODO: have an undo feature just in case that wasn't on purpose
+			//$("#frontBurner li").on("swipeleft swiperight", function(ev){
+			//	window.console && console.log("swiped:"+ev.target);
+			//	ev.target.remove();
+			//} );	
+			
+
+			$('#notebook-ruled-arm').on("change",function(ev){
+				if ($(this).val() == "on") {
+					$("#frontBurner").addClass('notebookruled');
+				} else {
+					$("#frontBurner").removeClass('notebookruled');
+				}
+			});
+
+			$('#timeaccumdisplay-arm').on("change",function(ev){
+				if ($(this).val() == "on") {
+					var topitem = $("li:first-child","#frontBurner");
+					if (!topitem.attr("data-session-time")) {
+						topitem.attr("data-session-time", "0");
+					}
+					$("#frontBurner").children().each(function (){
+						var li = $(this);
+						var chron = "" + li.attr("data-session-time") ;
+						//console.log($(this).tagname + ' ' + $(this).attr("data-session-time"));
+						if (chron.match(/[0-9:.]/)) {
+							$("sup",li).remove(); //Unconditional, but its probably just as fast.
+							li.append(' <sup class="micronote">' + $(this).attr("data-session-time") + '</sup>');
+						} else {
+							//meh//li.append(' <sup class="micronote">0</sup>');
+						}
+					});
+				} else {
+					$("li sup","#frontBurner").remove();
+				}
+			});
+
+
+			$('#reset-arm').on("change",function(ev){
+				if ($(this).val() == "on") {
+					$("#totalReset").button('enable');
+				} else {
+					$("#totalReset").button('disable');
+				}
+			});
+			$("#totalReset").on("click", function(ev){
+				//localStorage.setItem("frontBurner",'');
+				if ($("#reset-arm").val() == "on") {
+					listStore("frontBurner",'');
+					$("#inputBox").val('');
+					$("#frontBurner").html('');
+
+					$("#reset-arm").val("off");
+					// if above call doesn't kick the event //$("#totalReset").button('disable');
+				} else {
+					console.log("RESET DENIED. You must arm the reset meganism first.");
+				}
+			} );
+			$("#undo").on("click", function(ev){
+				//TODO: what about the chronostamp argument? can't recall intent at this point. Maybe a timeslider?
+				console.log("Undoey...");
+				var stretcher=50;
+				$("#frontBurner").children().each(function (){
+					//TODO: scoping problems here. this is this? or that?
+					console.log($(this).text);
+					$(this).fadeOut(1200 + (stretcher+=100), function(){$(this).remove();});
+				});
+				restoreStore("frontBurner.0",0);
+				alert("After an undo, you should refresh page to make sure everything is as you expect it to be. Or maybe you should open a fresh window so that you can copy and paste to preserve as much as possible in a particularly bad failure case.");
+			});
+			$("#exportDownload").on("click", function(ev){
+				var chronostamp = (new Date).getTime();
+				//$(ev.target).delay(750).fadeOut(250); //seems to break statefulness of hideshow
+				$("#downloadCtl").delay(750).fadeOut(250); //seems to break statefulness of hideshow
+				//$(ev.target).delay(250).button('disable');
+				localStorage.setItem("lastBackupDateTime", chronostamp);
+			});
+			$("#inputBox").on("keyup", function(ev){
+				//window.console && console.log('Received keycode: ' + ev.keyCode);
+				if (ev.keyCode == '13') { 
+					//TODO: wrap the interactivification into a procedure so that initialization and item addition are assured to have the same behaviors as behaviors are evolved.
+					window.console && console.log($("#inputBox").val());
+					//TODO: parse for newlines, optionally treat each one as separate item/insertion
+					var chomped;
+					chomped = $("#inputBox").val().replace(/[\n\r]/,'');
+					if (ev.shiftKey) {
+						chomped = 
+						$("#frontBurner").prepend("<li>"+ chomped + "</li>\n");
+					} else {
+						chomped = 
+						$("#frontBurner").append("<li>"+ chomped + "</li>\n");
+					}
+///					.on("dblclick swiperight", function(ev){
+///						window.console && console.log("delete interaction:"+ev.target);
+///						//window.console && console.log(ev.target.nodeName);
+///						$(ev.target).fadeOut(600);
+///						$(ev.target).remove();
+///						listStore("frontBurner", $("#frontBurner").html() );
+///					} )
+///					.on("swipeleft", function(ev){
+///						window.console && console.log("swipeleft:"+ev.target);
+///						//window.console && console.log(ev.target.nodeName);
+///						$("#inputBox").val($(ev.target).text());
+///						$(ev.target).fadeOut(600);
+///						$(ev.target).remove();
+///						listStore("frontBurner", $("#frontBurner").html() );
+///					} )
+///					;	
+
+					listStore("frontBurner", $("#frontBurner").html() );
+					$("#inputBox").val('');
+				}
+			} );
+
+			$("#stopwatchStart").on("click", function(ev){
+				//TODO dynamic that 600 seconds
+				//$(":first-child","#frontBurner").attr("data-session-time", 600);
+				var stopwatchTID = setInterval(function() {
+					var fb1 = $(":first-child","#frontBurner");
+					if (typeof fb1.attr("data-session-time") === 'undefined') {
+						fb1.attr("data-session-time",0);
+					}
+					fb1.attr("data-session-time", (parseInt(fb1.attr("data-session-time")) + 10)) ;
+
+					var timeaccumdisplay = $('#timeaccumdisplay-arm');
+					if (timeaccumdisplay.val() == "on") {
+						timeaccumdisplay.val('off').slider('refresh');
+						timeaccumdisplay.val('on').slider('refresh');
+					}
+					console.log("Time chunk credited. Not saved");
+					//TODO: hmm should we save to localstorage every hour? Maybe do a special save that is non-rolling so we don't blow away short-term history/resotre capability?
+					if ($(":first-child sup","#frontBurner").html(fb1.attr("data-session-time")).length == 0){ //will this throw an error if the sup isn't there?
+						if (timeaccumdisplay.val() == "on") { //this catches a situation where the "top item" has changed while accum display is already on (so it might not have a sup yet, if it was added new or brought up with never having had on in its past)
+							fb1.append(' <sup class="micronote">' + fb1.attr("data-session-time") + '</sup>');
+						}
+					}
+
+				}, 600 * 1000);
+				//create timer, named after the item, store the id somewhere in an array or something
+				//when "top item" leaves top, stop crediting time. Does user need to be notified? maybe the first couple of timees..
+			} );
+			$("#stopwatchStop").on("click", function(ev){
+				//TODO dynamic that 600 seconds
+				//$(":first-child","#frontBurner").attr("data-session-time", 600);
+				//stop the timer, named after the item, remove the id somewhere in an array or something
+			} );
+			$("#stopwatchClear").on("click", function(ev){
+				var topitem = $("li:first-child","#frontBurner");
+				topitem.attr("data-session-time", "0");
+				if(! $(":first-child sup","#frontBurner").length == 0) {
+					$(":first-child sup","#frontBurner").html("0");
+				} 
+			} );
+			$("#stopwatchIncrement").on("click", function(ev){
+				var sofar;
+				var topitem = $("li:first-child","#frontBurner");
+				sofar = topitem.attr("data-session-time");
+				if (isNaN(sofar)) { 
+					window.console && console.log('ERROR: attribute data-session-time had bad data. [' + sofar + ']');
+					sofar =  0; 
+				}
+				sofar = parseInt(sofar) + 10;
+				topitem.attr("data-session-time", sofar);
+				if($(":first-child sup","#frontBurner").html(sofar).length == 0) {
+					//it might exist, but not be showing, so this isn't right:...//topitem.append(' <sup class="micronote">10</sup>');
+					console.log("I think you are currently not showing time, so just crediting silently...");
+				} //no else, because the conditional test line itself also executed attempt to update.
+					
+
+				//TODO: preserve data attributes on pop/insert
+			} );
+		} );
+
+
+		//==\\||//==\\
+
+//TODO: test & move to util.js or eliminiate
+function setCaretPosition(elem, caretPos) {
+    var range;
+
+    if (elem.createTextRange) {
+        range = elem.createTextRange();
+        range.move('character', caretPos);
+        range.select();
+    } else {
+        elem.focus();
+        if (elem.selectionStart !== undefined) {
+            elem.setSelectionRange(caretPos, caretPos);
+        }
+    }
+}
+
+
+		function listCleanse() {
+			//Styleing should all be classes and so forth.
+			//Any direct style attribute is temporary and it is acceptable to wipe it out at any time.
+			$("#frontBurner > li").removeAttr("style");
+		}
+
+		function listAppend() {
+			var chomped;
+			var inputBox;
+			inputBox = $("#inputBox");
+			chomped = inputBox.val().replace(/[\n\r]/,'');
+			chomped = 
+			$("#frontBurner").append("<li>"+ chomped + "</li>\n");
+			$(":last-child", "#frontBurner").attr("data-session-time", inputBox.attr("data-session-time"));
+
+			listCleanse();
+			listStore("frontBurner", $("#frontBurner").html() );
+			inputBox.val('');
+			inputBox.attr("data-session-time",'');
+		}
+
+		function listPrepend() {
+			var chomped;
+			var inputBox;
+			inputBox = $("#inputBox");
+			chomped = inputBox.val().replace(/[\n\r]/,'');
+			chomped = 
+			$("#frontBurner").prepend("<li>"+ chomped + "</li>\n");
+			$(":first-child", "#frontBurner").attr("data-session-time", inputBox.attr("data-session-time"));
+
+			listCleanse();
+			listStore("frontBurner", $("#frontBurner").html() );
+			inputBox.val('');
+			inputBox.attr("data-session-time",'');
+		}
+
+
+		function prepExport(dlLink) {
+			//TODO: change the export download filename and filename extension.
+			var delim=','
+			listCleanse();
+
+			if ($("input[name=exportFormat]:checked").val() == 'text') {
+				//TODO: #backburner verify foolproof deliniation?
+				$("#"+dlLink).attr('href','data:,-=#FRONTBURNER#=-'+$("#frontBurner").html()
+					+"\n-=#BACKBURNER#=-"+$("#backBurner").html()
+					+"\n-=#CONFIGURATION#=-"
+						+$("#backupreminders-arm").val()+delim
+						+$("input[name=backupreminderFrequency]:checked").val()+delim
+						+$("#deadlines-arm").val()+delim
+						+$("input[name=exportFormat]:checked").val()
+				);
+				$("#exportDownload").attr("download",
+					$("#exportDownload").attr("download").replace(/\.\w+$/,'.txt')
+				);
+			} else if ($("input[name=exportFormat]:checked").val() == 'xml') {
+				//TODO: Clean up and iron out the format/dtd/schema/RNG/etc/bbqlol
+				$("#"+dlLink).attr('href','data:,<?xml version="1.0"?><taskburner><frontburner>'+$("#frontBurner").html()
+					+"\n</frontburner><backburner>"+$("#backBurner").html()
+					+"\n</backburner><configuration>"
+						+$("#backupreminders-arm").val()+delim
+						+$("input[name=backupreminderFrequency]:checked").val()+delim
+						+$("#deadlines-arm").val()+delim
+						+$("input[name=exportFormat]:checked").val()
+					+"\n</configuration></taskburner>"
+
+				);
+				$("#exportDownload").attr("download",
+					$("#exportDownload").attr("download").replace(/\.\w+$/,'.xml')
+				);
+		//==--TODO: another else if here for CSV
+			} else if ($("input[name=exportFormat]:checked").val() == 'CSV') {
+				var delim = "%0A";
+				var csvdata = "##task description,priority,minutes logged" + delim;
+				$("#frontBurner").children().each(function (){
+					var li = $(this);
+					var chron = li.attr("data-session-time");
+					//TODO: exclude the time accum disp sups (maybe just turn off the display temporarily?)
+					csvdata += escapeCSV(li.text()) + ",high," + (chron ? chron : "" )+ delim;
+				});
+				$("#backBurner").children().each(function (){
+					var li = $(this);
+					var chron = li.attr("data-session-time");
+					csvdata += escapeCSV(li.text()) + ",low," + (chron ? chron : "" )+ delim;
+				});
+				$("#"+dlLink).attr('href','data:,'+csvdata);
+				$("#exportDownload").attr("download",
+					$("#exportDownload").attr("download").replace(/\.\w+$/,'.csv')
+				);
+			} else if ($("input[name=exportFormat]:checked").val() == 'ICAL') {
+				var uniqerator = 1;
+				//TODO: finish implement this format per rfc 5545. Mostly just need to do the loopthrough.
+				//	consider: https://github.com/mozilla-comm/ical.js
+				var vtododata = "";
+				$("li","#frontBurner").each(function(idx){
+					vtododata +=
+						"BEGIN:VTODO"
+						+ "\nUID:" + datetimestamp() + "-" + uniqerator + "@dominiumentis.com"
+						+ "\nDTSTAMP:" + datetimestamp().replace('.','')  //TODO: the tz or such?
+						//+ "DUE;VALUE=DATE:" + 20070501
+						+ "\nSUMMARY:" + $(this).text() //$("li", "#frontBurner")[0].innerText
+						//+ "\nCLASS:CONFIDENTIAL"
+						//TODO: make this a configurable?//+ "\nCATEGORIES:FAMILY,FINANCE"
+						+ "\nSTATUS:NEEDS-ACTION"
+						+ "\nEND:VTODO\n\n";
+				});
+				//TODO: background tasks too?
+				window.console && console.log(vtododata);
+				alert('Oops, sorry, format not supported yet. It is on the todo list!');
+				$("#"+dlLink).attr('href','data:,'+vtododata);
+				$("#exportDownload").attr("download",
+					$("#exportDownload").attr("download").replace(/\.\w+$/,'.ical')
+				);
+			} else {
+				window.console && console.log("ERROR: Invalid export format or bad handling. Format was:"
+					+$("input[name=exportFormat]:checked").val() 
+				);
+			}
+
+			//$("#"+dlLink+":parent").fadeIn(250); //seems to break statefulness of hideshow
+			$("#downloadCtl").fadeIn(250);  //TODO: use class instead of ID, then use .filter to climb up ancestry till getting to that class , so it can be element parameterable again .
+			//$("#"+dlLink).button('enable');
+			$("#exportDownload").click(); //not working??
+		}
+
+
+		function prepImport(dFile) {
+			var delim=','
+			//TODO: get a fileupload box, intercept file, load into mem, preview (sub div on top?), if affirmed, push into the live app's elements
+			$("#"+dlLink).attr('href','data:,-=#FRONTBURNER#=-'+$("#frontBurner").html()
+				+"\n-=#BACKBURNER#=-"+$("#backBurner").html()
+				+"\n-=#CONFIGURATION#=-"
+					+$("#backupreminders-arm").val()+delim
+					+$("input[name=backupreminderFrequency]:checked").val()+delim
+					+$("#deadlines-arm").val()+delim
+					+$("input[name=exportFormat]:checked").val()
+			);
+			//$("#"+dlLink+":parent").fadeIn(250); //seems to break statefulness of hideshow
+			$("#downloadCtl").fadeIn(250);  //TODO: use class instead of ID, then use .filter to climb up ancestry till getting to that class , so it can be element parameterable again .
+			//$("#"+dlLink).button('enable');
+		}
+
+
+		function backupReminder() {
+			var chronostamp = (new Date).getTime();
+			var cfgInterval;
+			var msg;
+			
+			cfgInterval = $("input[name=backupreminderFrequency]:checked").val();
+			if ($("select[name=backupreminders-arm]").val() == "on") {
+				if (typeof localStorage["lastBackupDateTime"] === 'undefined') {
+					msg = "No backup has yet been performed! ";
+				} else {
+					msg = (datetimestamp(chronostamp) + ": " +  (chronostamp - localStorage["lastBackupDateTime"]) + " time units since last backup.");
+				}
+				console.log(msg);
+				$("#backupReminderDisplay").html(
+					'<a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-notext ui-btn-up-a" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" title="Close"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">(X)</span><span class="ui-icon ui-icon-delete ui-icon-shadow">&nbsp;</span></span></a>' +
+			//		'<a href="#" id="buprmndclose" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">(X)</a>'+
+					"<p>"+ msg +" Time for a backup?</p>"
+				).popup("open",{x:50,y:15,transition:"slidedown"});
+				console.log("    Backup rereminder set to " + cfgInterval + " minutes.");
+			} else {
+				console.log("backup reminders off, skipped actions."); //TEST LINE TODO: DELETEME
+			}
+			setTimeout("backupReminder();",1000*60 * cfgInterval);
+		}
+			
+	</script>
+	<style> 
+		/*
+		font-family: 'Scada', sans-serif;
+		font-family: 'Vollkorn', serif;
+		font-family: 'Signika', sans-serif;
+		*/
+	</style>
+</head>
+<body>
+<div id="appage" data-role="page">
+	<div id="appConfig" data-role="panel" data-theme="b">
+		<h2>Save/backup</h2>
+		<p>
+		This is mostly automatic; after each removal or addition, the lists are saved to localstorage. 
+		</p>
+		<button id="undo" data-inline="true" data-mini="true">Undo</button>
+
+		<h2>Backup Reminders</h2>
+		<!--<label for="backupreminders-arm">Backups:</label>-->
+		<select name="backupreminders-arm" id="backupreminders-arm" data-role="slider" >
+			<option value="off">Off</option>
+			<option value="on">On</option>
+		</select>
+		<fieldset data-role="controlgroup" data-mini="true">
+			<legend>Frequency</legend>
+			<input type="radio" name="backupreminderFrequency" id="backupreminderFrequency-1" value="60" checked="checked" />
+			<label for="backupreminderFrequency-1">Hourly</label>
+
+			<input type="radio" name="backupreminderFrequency" id="backupreminderFrequency-2" value="1440"  />
+			<label for="backupreminderFrequency-2">Daily</label>
+
+			<input type="radio" name="backupreminderFrequency" id="backupreminderFrequency-3" value="10080"  />
+			<label for="backupreminderFrequency-3">Weekly</label>
+
+			<input type="radio" name="backupreminderFrequency" id="backupreminderFrequency-4" value="302400"  />
+			<label for="backupreminderFrequency-4">Monthly</label>
+		</fieldset>
+
+		<h2>Cosmetics</h2>
+		<label for="notebook-ruled-arm">College ruled notebook</label>
+		<select name="notebook-ruled-arm" id="notebook-ruled-arm" data-role="slider" >
+			<option value="off">Off</option>
+			<option value="on">On</option>
+		</select>
+		
+		<h2>Deadlines</h2>
+		<!--<label for="deadlines-arm">Backups:</label>-->
+		<select name="deadlines-arm" id="deadlines-arm" data-role="slider" >
+			<option value="off">Off</option>
+			<option value="on">On</option>
+		</select>
+
+		<h2>Exports</h2>
+		<fieldset data-role="controlgroup" data-mini="true">
+			<legend>Export Format</legend>
+			<input type="radio" name="exportFormat" id="exportFormat-1" value="text" checked="checked" />
+			<label for="exportFormat-1">Text/plainish</label>
+
+			<input type="radio" name="exportFormat" id="exportFormat-2" value="xml"  />
+			<label for="exportFormat-2">XML</label>
+
+			<input type="radio" name="exportFormat" id="exportFormat-3" value="ICAL"  />
+			<label for="exportFormat-3">ICAL/VTODO</label>
+
+			<input type="radio" name="exportFormat" id="exportFormat-4" value="Markdown"  />
+			<label for="exportFormat-4">Markdown/Wiki</label>
+
+			<input type="radio" name="exportFormat" id="exportFormat-5" value="CSV"  />
+			<label for="exportFormat-5">CSV</label>
+		</fieldset>
+
+
+		<!-- TODO: buttonize and sexify this export thing a bit further -->
+		<!-- TODO: fix hide/show behaviors now that they are buttonized -->
+		<a href="javascript:prepExport('exportDownload');" data-role="button">PrepExport</a> <span id="downloadCtl"><a id="exportDownload" href="data:," download="TaskBurner_Export.txt" data-role="button">Download</a></span>
+
+		<h2>Imports</h2>
+		<input type="file" id="importFile" name="importFile" />
+		<output id="fslist"></output>
+
+		<h2>Help</h2>
+		<p>TaskBurner: Super Simple Clientside-only Task Management. This is a completely client-side offline HTML5 application. No servers, no "cloud", no datamining. All local, all yours. This also means your list is only available to you on the device that you created the list on. There are some local list data export and import options, however.</p>
+		<a href="#helpage">Usage Documentation</a>
+
+
+		<h2> Reset </h2>
+		<p>Please note that the Complete Obliterative Reset is IRREVERSIBLE!</p>
+		<div id="controlPanel" data-role="fieldcontain">
+			<span id="reset-arm-ctl">
+			<label for="reset-arm">Obliteration:</label>
+			<select name="reset-arm" id="reset-arm" data-role="slider" >
+				<option value="off">Off</option>
+				<option value="on">ARMED</option>
+			</select>
+			</span>
+			<button id="totalReset" data-inline="true" data-mini="true">Complete Obliterative Reset</button>
+			<!--TODO: test this UNDO button. -->
+		</div>
+	</div>
+
+
+	<div id="stopwatchPanel" data-role="panel" data-position="right" data-theme="b">
+		<h2>Time Tracking</h2>
+		This will only apply to top task. It is supposed to be your "active" task.
+		<button id="stopwatchStart" data-inline="true" data-mini="true">Start crediting time</button>
+		<button id="stopwatchStop" data-inline="true" data-mini="true">Stop crediting time</button>
+		<button id="stopwatchIncrement" data-inline="true" data-mini="true">Add 10 minutes to session time</button>
+		<button id="stopwatchClear" data-inline="true" data-mini="true">Clear session time (to 0)</button>
+
+		<label for="timeaccumdisplay-arm">Accumulation Display:</label>
+		<select name="timeaccumdisplay-arm" id="timeaccumdisplay-arm" data-role="slider" >
+			<option value="off">Off</option>
+			<option value="on">On</option>
+		</select>
+			
+	</div>
+
+
+	<div id="minilogo">
+		<a href="#appConfig"><span id="thelogo">TaskBurner<img id="logoimage" src="burner.png?v=2" /></a></span><span class="endcap"></span></a>
+		<a id="stopwatchPanelShow" href="#stopwatchPanel" class="ui-btn ui-btn-inline ui-btn-right ui-icon-clock ui-btn-icon-notext" data-role="button" data-mini="true" data-inline="true">Chrono</a><!--TOOD: styling: image clock rhs little grippypanelpullthing-->
+	</div>
+
+	<div id="main" data-role="content">
+		<!--<a href="#appConfig" data-role="button"  data-icon="gear"  data-inline="true">Configure</a>--> <!-- also cool: triangleq smashp and oror-->
+		<div id="inputPanel" data-role="fieldcontain">
+			<button id="inputPrepend" data-inline="true">&#8625;</button> <!--awe man. I like &rsh; and &ldsh;, but unicode it is, for IE appeasement. -->
+			<textarea id="inputBox" data-inline="true"></textarea>
+			<button id="inputAppend" data-inline="true">&#8626;</button>
+		</div>
+
+		<div>
+			<ol id="frontBurner" class="frontish">
+			</ol>
+		</div>
+		<div>
+			<ol id="backBurner" class="backish">
+				<li>learn how to use the TaskBurner interface</li>
+				<li>fill the TaskBurner with tasks, wonderful tasks</li>
+			</ol>
+		</div>
+	</div>
+
+	<div id="backupReminderDisplay-popup" class="ui-popup-container">
+		<div data-role="popup" id="backupReminderDisplay">
+			<p>Time for a backup?<p>
+		</div>
+	</div>
+
+	<div data-role="footer">v0.7.3 - &copy; 2015 Dominiumentis Consulting</div>
+</div>
+<div id="helpage" data-role="page" data-theme="b">
+		<h2> Usage Guide </h2>
+		<p>There are just two lists: the Front Burner and the Back Burner. The Front Burner is meant for items that need to be completed without delay.  (other than another item that is also of a "not later" class, but slightly greater priority). There is no dependency graph or semantic tagging. The Back Burner is for stuff you defintely want to do or need to do, but it just isn't important enough to get priority right now, or has dependencies that are not satisfied and have no reliable estimated time to completion. Should there be a Side Burner? Maybe, but what would that be? Tasks that are coming up soon and <em>do</em> have an ETC? Things that would have ticklers/reminders attached? <a href="mailto:taskburner.app@dominiumentis.com?subject=TaskBurner feature proposal: Side Burner"> Let me know what you think</a>.</p>
+		<p>The default addition method is to append to the end. Just hit the Enter key or the append button (on the right-hand side of the input box). You can insert at the top of the list as well by pressing SHIFT+Enter or by pressing the insert button (on the left-hand side of the input box).</p>
+		<p>Removing items is kind of like "crossing it off the list": just swipe through (or perform a click and drag, horizontally, if using a mouse) through the item you want to remove. If you swipe left-to-right the item is deleted. If you swipe right-to-left the item is removed from the list and placed back into the input box. Now you can modify or insert at the top (or just reappend).</p>
+		<p>Demoting an item from the Front Burner to the Back Burner is achieved by pressing and holding on an item (without swiping). Promoting from Back Burner up to the Front Burner is done in the same way.</p>
+		<p>Time tracking is pretty minimal. You can just ignore it if you just need a task list. Deadlines are planned for a future release. They should be unobtrusive unless you are about to bust one.</p>
+		<p>Versioning is mostly automatic. After each removal or addition, the lists are saved to localstorage. You may wish to perform an export once in a while though! A real backup is separated from the data writer. You have one level of undo available to you, but note that the obliterative Reset is meant to wipe everything clean including the backups, so Undo will not be effective in that case.</p>
+		<p>Configuration and a few auxilliary options such as export is available from the control panel revealed by clicking on the logo on the upper left-hand corner of the page.</p>
+		<p>Tip: there isn't re-ordering per se, but if a few items have taken particular importance, just back-swipe them and insert-at-top. Presto: they are now displayed as On the Top of the Front Burner.</p>
+		<p>Tip: the back-swipe (right-to-left) actually appends to whatever is already in the input box. Thus, you can combine or concatenate items by back-swiping them in succession, then adding the combined input back to the FronBurner.</p>
+		<p>Tip: there is no in situ item text editing. But if you need to update, add to, correct, or otherwise edit an item, perform the back-swipe (right-to-left) and then make your edits in the input box and re-add to the Front Burner.</p>
+		<p>Tip: since HTML5 localStorage partitions and isolates based on the exact domain or origin as typed into the address bar, you must make sure to type in the exact servername (FQDN or bare hostname or IP address or alias or whatever) to get back to the same list. On the other hand you can use this as a multiple-lists hack, too. E.g., if you had a website at "www.foo.com", you could create DNS aliases "personal.foo.com" and "work.foo.com". Then you would have separate lists for work and personal life, all on the same device. Actually you would have a third at "www.foo.com", which you could use to demo TaskBurner to other people. ;)</p>
+	<a href="#appage" class="ui-btn" data-transition="slideup">Back to the Front Burner</a>
+
+	<div data-role="footer">v0.7.3 - &copy; 2015 Dominiumentis Consulting</div>
+</div>
+</body>
+</html>
