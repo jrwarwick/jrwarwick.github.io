@@ -4,11 +4,11 @@
 	<title>Artemis - Mission Time Clock</title>
 	<meta charset="utf-8" /> 
 	<meta name="description" content="Faux GUI supplement for set-dressing a gaming session of Artemis SBS." />
-        <meta name="author" content="Justin Warwick" />
+	<meta name="author" content="Justin Warwick" />
 	<meta name="mobile-web-app-capable" content="yes" />
-	<link rel='stylesheet' href='./artemis-sbs-ui.css' />
+	<link rel='stylesheet' href='./sbs-ui.css' />
 
-	<!-- Here would be a good place to put your own additional css link for unique/special things like spacing adjsutments based on element ID. The fewer changes in artemis-sbs-ui.css,  the better (esp. if you might want to share improvements that really are general purpose)  -->
+	<!-- Here would be a good place to put your own additional css link for unique/special things like spacing adjsutments based on element ID. The fewer changes in sbs-ui.css,  the better (esp. if you might want to share improvements that really are general purpose)  -->
 	<style>
 		#chrono_container {
 			padding-left: 2em;
@@ -22,6 +22,8 @@
 		  display:inline-block;
 		  margin: 1.5em 2em;
 		  background: #00001C;
+		  position: fixed; /* this and right: 50% prevent wandering on non-monospace font ticks*/
+		  right: 33%;
 		}
 
 		.timeCycWrapper, .timeCycWrapper * {
@@ -94,14 +96,15 @@
 		}
 
 	</style>
-	<script src="./artemis-sbs-ui.js"></script>
+	<script src="./sbs-ui.js"></script>
 </head>
 <body>
 <div id="super_container">
 	<div id="console_metacontrols">
 	   <a href="javascript:toggleFullScreen();" id="fullscreenToggle">[=]</a>     
 	</div>
-        <div id="console_super_controls">
+	<div id="console_super_controls">
+		<button class="major_action" onclick="window.location.href='menu.html';">MENU</button>
 		<button class="major_action major_action_active" onclick="javascript:g_clockActive=true;">START</button>
 		<button class="major_action" onclick="javascript:g_clockActive=false;">HALT</button>
 		<button class="major_action" onclick="javascript:missionMark=0;">RESET</button>
@@ -120,20 +123,6 @@
 
 	<div id="chrono_container">
 		<div>
-			<h3>Mission Time Mark</h3>
-			<span id="MissionTimeMark" class="jumbo timedisplay">HH:MI:SS</span>
-			<div class="timeCycWrapper">
-			  <div class="pie spinner"></div>
-			  <div class="pie filler"></div>
-			  <div class="mask"></div>
-			</div>
-					
-			<h3>Time Remaining</h3>
-			<span id="MissionTimeRemain" class="jumbo timedisplay">HH:MI:SS</span>
-			<div class="timeCycWrapper">
-				<button class="increment" onclick="missionLength+=60;"> </button>
-				<button class="decrement" onclick="missionLength-=60;"> </button>
-			</div>
 			<h3>UTC</h3>
 			<span id="UTCTime" class="jumbo timedisplay">HH:MI:SS</span>
 			<div class="timeCycWrapper">
@@ -149,6 +138,22 @@
 			  <div class="pie filler"></div>
 			  <div class="mask"></div>
 			</div>
+
+			<h3>Mission Time Mark</h3>
+			<span id="MissionTimeMark" class="jumbo timedisplay">HH:MI:SS</span>
+			<div class="timeCycWrapper">
+			  <div class="pie spinner"></div>
+			  <div class="pie filler"></div>
+			  <div class="mask"></div>
+			</div>
+					
+			<h3>Time Remaining</h3>
+			<span id="MissionTimeRemain" class="jumbo timedisplay">HH:MI:SS</span>
+			<div class="timeCycWrapper">
+				<button class="increment" onclick="missionLength+=60;"> </button>
+				<button class="decrement" onclick="missionLength-=60;"> </button>
+			</div>
+
 		</div>
 	</div>
 
@@ -199,35 +204,37 @@ var tid = window.setInterval(function(){
 	var ss = "0" + dt.getUTCSeconds();
 	document.getElementById("UTCTime").innerHTML = HH.substr(HH.length - 2) + ":" + mm.substr(mm.length - 2) + ":" + ss.substr(ss.length - 2);
 
-	if (g_clockActive) {
-		remain = (missionLength - missionMark) ;
-		if (remain < 0) {
-			document.getElementById("MissionTimeRemain").style.color = "#DF3030";
-			if (remain % 10 == -1 ) {
-				termAlert();
-			}
-			remain = -1 * remain;
+	//Relative time elements. Well maybe "arbitrarily relative" or something.
+	remain = (missionLength - missionMark) ;
+	if (remain < 0) {
+		document.getElementById("MissionTimeRemain").style.color = "#DF3030";
+		if (remain % 10 == -1 ) {
+			termAlert();
 		}
-		document.getElementById("MissionTimeRemain").innerHTML = ((missionLength - missionMark) < 0 ? '-' : '') 
-			+ ('0' + Math.floor(remain / 3600)).slice(-2) + ":" 
-			+ ('0' + (Math.floor(remain / 60) % 60)).slice(-2) + ":" 
-			+ ('0' + (remain % 60)).slice(-2);
+		remain = -1 * remain;
+	}
+	document.getElementById("MissionTimeRemain").innerHTML = ((missionLength - missionMark) < 0 ? '-' : '') 
+		+ ('0' + Math.floor(remain / 3600)).slice(-2) + ":" 
+		+ ('0' + (Math.floor(remain / 60) % 60)).slice(-2) + ":" 
+		+ ('0' + (remain % 60)).slice(-2);
 
-		document.getElementById("MissionTimeMark").innerHTML = ('0' + Math.floor(missionMark / 3600)).slice(-2) + ":" 
-			+ ('0' + (Math.floor(missionMark / 60) % 60)).slice(-2) + ":" 
-			+ ('0' + (missionMark % 60)).slice(-2);
+	document.getElementById("MissionTimeMark").innerHTML = ('0' + Math.floor(missionMark / 3600)).slice(-2) + ":" 
+		+ ('0' + (Math.floor(missionMark / 60) % 60)).slice(-2) + ":" 
+		+ ('0' + (missionMark % 60)).slice(-2);
+	if (g_clockActive ) { //i.e., is game and clock in "HALT"/pause mode?
 		missionMark ++;
-		//TODO: if "paused" then add one second to the etc
-		if ( missionMark % 109 == 0 )  { //this is a gross approximation of the factor * 100 metricseconds to get a hectosecond 
-			console.log("one 'metric' minute or 'hectosecond' has passed.");
-			//earlier on, we have a css animation that uses a slightly better approximation for the ring period counter, which is one dekasecond
-		}
+		//TODO: mission time mark's visual clock circle should also pause.
+	}
+	//TODO: if "paused" then add one second to the etc
+	if ( missionMark % 109 == 0 )  { //this is a gross approximation of the factor * 100 metricseconds to get a hectosecond 
+		console.log("one 'metric' minute or 'hectosecond' has passed.");
+		//earlier on, we have a css animation that uses a slightly better approximation for the ring period counter, which is one dekasecond
 	}
 
 }, 1000);
 //sync up with beginning of clock run?//document.getElementByID("timeCycWrapper").animation-play-state: paused;
 
 </script>
-<script src="artemis-sbs-ui-wireup.js"></script>
+<script src="sbs-ui-wireup.js"></script>
 </body>
 </html>

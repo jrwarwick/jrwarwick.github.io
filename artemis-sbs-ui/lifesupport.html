@@ -4,21 +4,32 @@
 	<title>Artemis - Life Support</title>
 	<meta charset="UTF-8" />
 	<meta name="description" content="Faux GUI supplement for set-dressing a gaming session of Artemis SBS." />
-        <meta name="author" content="Justin Warwick" />
-	<link rel='stylesheet' href='./artemis-sbs-ui.css' />
+	<meta name="author" content="Justin Warwick" />
+	<link rel='stylesheet' href='./sbs-ui.css' />
 	<link rel='stylesheet' href='./sinebars-animated.css' />
-	<script src="./artemis-sbs-ui.js"></script>
+	<script src="./sbs-ui.js"></script>
 </head>
 <body>
 <div id="super_container">
-        <div id="console_metacontrols">
-           <a href="javascript:toggleFullScreen();" id="fullscreenToggle">[=]</a>
-        </div>
+	<div id="console_metacontrols">
+	   <a href="javascript:toggleFullScreen();" id="fullscreenToggle">[=]</a>
+	</div>
 	<div id="console_super_controls">
+		<button class="major_action" onclick="window.location.href='menu.html';">MENU</button>
 		<button class="major_action major_action_active">ATMOSPHERIC</button>
 		<button class="major_action">AQUATIC</button>
 		<button class="major_action">RADIANT</button>
 	</div>
+
+
+    <div id="communique" >
+        <h1>Welcome to Artemis Glitter UI Style Clone Test</h1>
+        <p>Status and information flowing endlessly, giving a certain ambience.</p>
+        <p>Even if information is not functionally meaningful, the experience is enhance by giving a feeling of authenticity.</p>
+        <p>Presumably, you want to fill the screen pretty evenly, if browser were in fullscreen mode. But also becareful not to overflow or else you get scrollbars that spoil the effect a little. Hopefully this page is clean and clear enough that you could copy it, rename it, then start copy and pasting segments that you like and just replace the content and order a little and then you have yourself a custom faux console.</p>
+        <button class="action" onclick="javascript:this.parentNode.style.display = 'none';">ACKNOWLEDGE</button>
+        <!--Probably it is better to put onclick and other evenhandler code in a seperate script block, even in a separate JS file. But this works ok too.-->
+    </div>
 
 
 	<div class="wrapper2column">
@@ -141,7 +152,7 @@
 							Containment system at (1000 K/Pa)
 								</li>
 								<li>
-							Embolism Danger (sustained 30 minutes / 10 K/Pa over 100)
+							Embolism Danger (sustained 30 min. / 10 K/Pa over 100)
 								</li>
 								<li>
 							Normal (100 K/Pa)
@@ -156,7 +167,7 @@
 							Edema Danger at (50 K/Pa)
 								</li>
 							</ul>
-							Ship volume: 225,000m<sup>3</sup>, estimated gas mass. A whole column of deltas
+							Ship volume: 225,000m<sup>3</sup>, estimated gas mass. 
 						</div>
 					</div>
 
@@ -198,7 +209,7 @@
 <!--  -->
 
 					<!--
-					<img src="simpleship.svg" />
+					<img src="images/simpleship.svg" />
 					-->
 
 					<p>MAG FLD STR: 100 ev</p>
@@ -268,6 +279,6 @@
 window.console && console.log("TODO some dynamicness");
 
 </script>
-<script src="artemis-sbs-ui-wireup.js"></script>
+<script src="sbs-ui-wireup.js"></script>
 </body>
 </html>

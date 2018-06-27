@@ -1,13 +1,19 @@
 Imitation Artemis SBS UI in HTML5/CSS/JS for Enhanced Ambiance
 ==============================================================
 
-Supplemental GUIs in HTML5/CSS/JS, as environmental decoration for the multiplayer game Artemis SBS. Even if information is not functionally meaningful, the experience is enhanced by giving a feeling of authenticity, ambiance.
+Supplemental GUIs in HTML5/CSS/JS, as environmental decoration for multiplayer games like Artemis SBS or Space Nerds in Space or Empty Epsilon; so-called "starship bridge simulators". Even if information is not functionally meaningful, the experience is enhanced by giving a feeling of authenticity, ambiance.
 
-This is meant to be an easy-to-use visual layer for greebly/glittery/set-dressing type screens on an Artemis SBS custom bridge. Somewhat similar to the TAC and INFO screens from the Data station, but with no real "in-game" information. It is essentially just a CSS theme with an HTML5 "template" and a few examples to get you started. At the fancier end of things, you could probably glue this together with some kind of fancy node backend like artemis-glitter (that was certainly my original plan), but, baby steps. This project is inspired by @IvanSanchez's artemis-glitter, but more modest in scope. However, at some point in the future, the astute Game Master may be able to utilize these secondary interfaces to convey information to players or trigger game events in response to particular secondary interface actions, all in an in-game meaningful fashion; e.g., science scans of a region of space, rather than just known objects, reveals some play-impacting information or maybe a "reverse the polarity of the deflector dish while flooding the plasma vents" can transfer some energy to a stranded merchant vessel.
+This is meant to be an easy-to-use visual layer for greebly/glittery/set-dressing type screens on an SBS custom bridge. In the case of Artemis, this is somewhat similar to the TAC and INFO screens from the Data station, but with no real "in-game" information. It is essentially just a CSS theme with an HTML5 "template" and a few examples to get you started. At the fancier end of things, you could probably glue this together with some kind of fancy NodeJS backend like artemis-glitter (that was certainly my original plan), but, baby steps. This project is inspired by @IvanSanchez's artemis-glitter, but more modest in scope. However, at some point in the future, the astute Game Master may be able to utilize these secondary interfaces to convey information to players or trigger game events in response to particular secondary interface actions, all in an in-game meaningful fashion; e.g., science scans of a region of space, rather than just known objects, reveals some play-impacting information or maybe a "reverse the polarity of the deflector dish while flooding the plasma vents" can transfer some energy to a stranded merchant vessel, or perhaps moving a damcon team to an aft node (where the cargo bay is) represents the damcon team collecting needed parts to perform a critical repair (that would otherwise become re-damaged by GM standing in for "unstable phase transducers").
 
 The most basic CSS layer should work with IE10 "or better". Fancier stuff uses CSS3 and SVG with animation and good JS. So the optimal environment would be a recentish edition of Chrome. Chrome (and/or Chromium and/or Canary) is available on most common platforms. Perhaps try NeverWhere's CloudReady, which will turn a laptop into a "Chromebook". I had pretty good success with it even on some slightly older Dell laptops.
 
-To make some use of this, you will probably need some kind of basic webserver (but does not have to be on the internet, per se, just available to your Artemis client computers on the LAN) and "install" this in the web root directory. Since it is all client-side, just download a .zip file (or do a git clone) right in your web server's web root, and as long as your webserver is serving, you are ready to go. Should even be usable on android & iOS devices.
+To make some use of this, you will probably need some kind of basic webserver (but does not have to be on the internet, per se, just available to your game client computers on the LAN) and "install" this in the web root directory. Since it is all client-side, just download a .zip file (or do a git clone) right in your web server's web root, and as long as your webserver is serving, you are ready to go. Should even be usable on android & iOS devices.
+
+Switching "styles" is achieved through a few simple symbolic links:  
+ * sbs-ui.css
+ * images
+ * audio
+Just point to the versions with the appropriate name prefix. If you run an OS without symbolic link support (such as MS Windows), just make copies of the directories and files and rename.
 
 Presently pages are client-side only in any dynamicness. 
 
@@ -20,6 +26,7 @@ Pages planned or in progress
  * cartography
 	* randomized orrerry
 	* waypoint/jump path tracer/generator
+	* scrolling list of local celestial objects "of interest"
  * life support
 	* ~~atmosphere, water~~
 		* ~~composition~~
@@ -54,9 +61,16 @@ Pages planned or in progress
  * science 
 	* short range sensor that can reveal pre-seeded (by GM) info that is fun/interesting, or maybe even game signficant.
 
+Generic-ification to make it useful for many games including, but not limited to:
+ * Artemis
+ * Space Nerds in Space
+ * Empty Epsilon
+ * No game in particular, just put on laptop, insert into tent or couch-fort imaginary spaceship
+
 Optional server-side statefulness via DB
  * angular/meteor
  * mongodb or couchdb
+ * some kind of graceful fall back to a handful of static JSON files that would at least make pages look nice.
 
 GM's console
  * general super easy report/editor
@@ -64,7 +78,7 @@ GM's console
  * presets/datasets that can be saved and loaded. E.g., a sectormap meant to be "bundled" with a particular scripted mission. Once loaded, secondary science scan facts could be discovered.
 
 Optional Real actual gamestate integration
- * independent Data Client RESTful "translator" 
+ * independent Data Client RESTful "translator/wrapper". Probably based on IAN 
  * optional consumption of the services
  * gamestate input/change capability
 
@@ -84,6 +98,9 @@ Everything is shared under the MIT license, details in the LICENSE file. A few b
 Thanks
 ======
 
+for contributing:
+* @aaroneiche
+
 for software resources:
 *  http://www.colorzilla.com/gradient-editor/
 *  http://lea.verou.me/css3patterns/
@@ -92,6 +109,9 @@ for software resources:
 *  https://github.com/SamHerbert/SVG-Loaders
 *  http://codepen.io/colin/pen/kKCDp
 *  https://github.com/sindresorhus/screenfull.js
+
+for media resources:
+*  https://github.com/smcameron/space-nerds-in-space
 
 for information and references:
 *  http://www.st-v-sw.net/STSWvolumetrics.html
