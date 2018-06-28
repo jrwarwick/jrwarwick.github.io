@@ -19,9 +19,11 @@ document.querySelectorAll('button.major_action').forEach(function(elm,idx,arr){
 
 
 if (sessionStorage["greeting"] == "acknowledged") {
-	document.querySelector("#communique").style.display = 'none';
+	var commElm = document.querySelector("#communique"); 
+	if (commElm) {
+		commElm.style.display = 'none';
+	}
 }
-
 
 
 
@@ -48,7 +50,7 @@ for (var key in audioExtensions) {
 		break;
 	}
 }
-audAck   = new Audio("audio/changescreen." + audioType);
+audAck   = new Audio("audio/bleep." + audioType);
 audAlert = new Audio("audio/ui13." + audioType);
 audInput = new Audio("audio/ui2." + audioType);
 
