@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<META HTTP-EQUIV="Expires" CONTENT="-1">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+<title>devicemotion demo</title>
+<meta name="description" content="html5 toy: turn your mobile phone into a motion-activated MineCraft toy by printing out the box art and putting it inside.">
+<meta name="viewport" content="width=device-width">
+<link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico" />
+<link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+<style>
+	h1 {font-family: 'Press Start 2P', serif;}
+	button {background: lightgreen;}
+</style>
+</head>
+<body>
+
+<h1>MineCraft TNT Hotpotato Game!</h1>
+<ol>
+	<li>Print, fold and tape the TNT block. </li>
+	<li>Navigate to this page on mobile phone (and "initialize" it by clicking the dumb button).</li>
+	<li>Place mobile phone inside TNT block, close the block.</li>
+	<li>Spawn some friends, everyone standing in a circle (how very <em>un</em>'craft)</li>
+	<li><em>funtime.</em> Bump/tap the TNT block to "ignite". Don't be the one holding the TNT when it blows! Toss it to someone else!</li>
+</ol>
+<ul>
+	<li> ProTip&reg;<sup>TM</sup> #1: Make sure the print out is big enough; perhaps upwards of 40cm along the longest 4-face part, assuming a longish, modern mobile phone that will sit in the box diagonally.</li>
+	<li> ProTip&reg;<sup>TM</sup> #2: It helps to turn screen time out off or to a very long time for the duration of the game. If the screen goes dark and locks, the javascript will no longer receive sensor events.</li>
+	<li> ProTip&reg;<sup>TM</sup> #3: Actually, probably better print out on paper, but also trace it out on some cardboard and glue or tape it on to that. Which in turn means some skills like scoring and creasing. A plain sheet of paper will probably not hold up very well.</li>
+</ul>
+
+<img src="tnt.png" />
+<p>Credit to super0noor for the TNT block cutout, found at <a href="http://www.pixelpapercraft.com/papercraft/4f5b5e980d82be0321000028/tnt">PixelPapercraft.</a></p>
+<div class="main">
+  <h2>Device Motion</h2>
+  <table>
+    <tr>
+      <td>Event Supported</td>
+      <td id="dmEvent"></td>
+    </tr>
+    <tr>
+      <td>acceleration</td>
+      <td id="moAccel"></td>
+    </tr>
+    <tr>
+      <td>accelerationIncludingGravity</td>
+      <td id="moAccelGrav"></td>
+    </tr>
+    <tr>
+      <td>rotationRate</td>
+      <td id="moRotation"></td>
+    </tr>
+    <tr>
+      <td>interval</td>
+      <td id="moInterval"></td>
+    </tr>
+  </table>
+</div>
+
+<p id="ansr"> _ </p>
+
+
+
+<audio  id="audTNT22s" >
+	<source src="MC_TNT_hotpotato_22s.ogg" type="audio/ogg" />
+</audio>
+<audio  id="audTNT15s" >
+	<source src="MC_TNT_hotpotato_15s.ogg" type="audio/ogg" />
+</audio>
+<audio  id="audTNT12s" >
+	<source src="MC_TNT_hotpotato_12s.ogg" type="audio/ogg" />
+</audio>
+<audio  id="audTNT7s" >
+	<source src="MC_TNT_hotpotato_7s.ogg" type="audio/ogg" />
+</audio>
+
+<button id="init" onclick="document.getElementById('audTNT22s').play(); document.getElementById('audTNT15s').play(); document.getElementById('audTNT12s').play(); document.getElementById('audTNT7s').play();"> unavoidable initialization per page load to allow api calls to play sounds</button>
+<script>
+
+//vector w/autoaveragevar gX = [0,0,0,0], gY = [0,0,0,0], gZ = [0,0,0,0];
+//var gI = 0;
+var gX = 0, gY = 0, gZ = 0;
+var gState = "cold";
+
+function deviceMotionHandler(eventData) {
+  var info, xyz = "<pre>[X, Y, Z]</pre>";
+  //gI++; //advance the global 
+
+  // Grab the acceleration from the results
+  var acceleration = eventData.acceleration;
+  gX = Math.round( (acceleration.x * 10 + gX) / 2);
+  gY = Math.round( (acceleration.y * 10 + gY) / 2);
+  gZ = Math.round( (acceleration.z * 10 + gZ) / 2);
+  info = xyz.replace("X", String("    "+gX).slice(-4));
+  info = info.replace("Y", String("    "+gY).slice(-4));
+  info = info.replace("Z", String("    "+gZ).slice(-4));
+  //info = xyz.replace("X", Math.round(acceleration.x * 10 ));
+  //info = info.replace("Y", Math.round(acceleration.y * 10 ));
+  //info = info.replace("Z", Math.round(acceleration.z * 10 );
+  document.getElementById("moAccel").innerHTML = info;
+
+  document.getElementById("ansr").innerHTML = gState ;
+  if ((gX > 25 || gY > 25) && gState == "cold") {
+	fuseLength = [7,7,12,15,22][Math.floor(Math.random()*10) % 5]; //must match and coordinate with aud tags above.
+	gState = "LIT! [" + fuseLength.toString() + '] ' + "audTNT"+fuseLength.toString()+"s";
+	var audFuse = document.getElementById("audTNT"+fuseLength.toString()+"s");
+	document.getElementById("ansr").innerHTML = gState +"::" + audFuse.networkState;
+	audFuse.play();
+	var tid = window.setTimeout(function(){
+		//document.getElementById('audBoom').play(); 
+		gState = "cold";
+	},300 + 1000 + fuseLength * 1000);
+	var tid = window.setTimeout(function(){
+		window.navigator.vibrate([300,20,120,20,60]);
+	},fuseLength * 1000 + 800);
+  }
+
+  // Grab the acceleration including gravity from the results
+  acceleration = eventData.accelerationIncludingGravity;
+  info = xyz.replace("X", String("    "+Math.round(acceleration.x * 100)).slice(-4));
+  info = info.replace("Y",String("    "+Math.round(acceleration.y * 100)).slice(-4));
+  info = info.replace("Z",String("    "+Math.round(acceleration.z * 100)).slice(-4));
+  document.getElementById("moAccelGrav").innerHTML = info;
+
+  // Grab the rotation rate from the results
+  var rotation = eventData.rotationRate;
+  info = xyz.replace("X", String("    "+Math.round(rotation.alpha  *100)).slice(-4));
+  info = info.replace("Y", String("    "+Math.round(rotation.beta  *100)).slice(-4));
+  info = info.replace("Z", String("    "+Math.round(rotation.gamma *100)).slice(-4));
+  document.getElementById("moRotation").innerHTML = info;
+
+  // // Grab the refresh interval from the results
+  info = eventData.interval;
+  document.getElementById("moInterval").innerHTML = info;       
+}
+
+
+if ((window.DeviceMotionEvent)) {
+  window.addEventListener('devicemotion', deviceMotionHandler, false);
+} else {
+  document.getElementById("dmEvent").innerHTML = "Not supported."
+}
+</script>
+
+</body>
+</html>
+
