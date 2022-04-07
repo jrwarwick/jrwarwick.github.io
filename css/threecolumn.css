@@ -127,3 +127,6 @@ header, #content, #middle, #sidebar {
 	border: solid 1px #D8D4D2;
 }
 
+#pagewrap {
+	background-color:#FCFBF7;
+}
