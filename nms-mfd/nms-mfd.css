@@ -1,0 +1,352 @@
+/**
+NMS-universe Diegetic star craft cockpit Multi-Function Displays
+Now your tablet or laptop is a supplemental extension of the game.
+
+Favor simplicity, universality, and portability. 
+
+Clean, no-scrollbar, try have reasonable responsiveness
+
+small radius on border corners
+.1rem border lines
+
+WhiteSmoke text
+Inter font
+
+ghostwhite
+
+Darkorange		chocolate 	firebrick
+LemonChiffon
+Gold
+
+header bar w/ three clusters of vert lines
+inverse squarish pill
+solid horizontal bargraph bars
+
+radial/piegraph 
+
+yellowish button
+**/
+
+@media (min-width: 640px) { 
+	html { font-size: .6em; }
+}
+@media (min-width: 768px) { 
+	html { font-size: .75em; }
+}
+@media (min-width: 1024px) { 
+	html { font-size: 1em; }
+}
+@media (min-width: 1280px) { 
+	html { font-size: 1.25em; }
+}
+@media (min-width: 1536px) { 
+	html { font-size: 1.5em; }
+}
+
+:root {
+  font-family: Inter, sans-serif;
+  font-feature-settings: 'liga' 1, 'calt' 1; /* fix for Chrome */
+  letter-spacing: .15rem;
+  word-spacing: .75rem;
+}
+@supports (font-variation-settings: normal) {
+  :root { font-family: InterVariable, sans-serif; }
+}
+
+html {
+}
+
+
+body {
+	background-color: #1C150A;
+	color: WhiteSmoke;
+	padding:.75rem;
+	margin:0;
+	/*width:100%;height:100%;*/
+}
+header {
+	border: .15rem solid LemonChiffon;
+	border-radius: .05rem;
+	padding: .75rem 1.25rem .75rem 1.25rem;
+	margin: .25rem 0 1rem 0;
+	color: Gold;
+	/* not convinced we have the perfect color here yet... Gold; Moccasin; LemonChiffon;*/
+}
+header span.datagram {
+	text-shadow: -1px -1px 2px #996622, 1px -1px 2px #996622, -1px 1px 2px #996622, 1px 1px 2px #996622;
+	margin-left: 2rem;
+	letter-spacing: .01rem;
+}
+span.datagram::before{
+	content: '█ ';
+	color: Gold;
+}
+span.datagram::after {
+	content: ' █';
+	color: Gold;
+}
+header a {
+	text-decoration:none;
+	color:inherit;
+	mask-image: repeating-linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, .10) 8%, rgba(0,0,0, 0.99) 16%, rgba(0, 0, 0, 0.73) 26%, rgba(0, 0, 0, 0) 33%);
+	mask-repeat: repeat;
+	font-stretch: condensed; /*doesn't seem to have an effect on the "graphic" type character entities such as &block; */
+	/*  this does help with "authenticity" of look in getting that streteched out tall look, but also causes block to be 100% width which de-syncs the 3-x linear gradient look
+	display:block;
+	transform: scaleY(1.3);
+*/
+}
+
+main {
+	font-size:2.25rem;
+	text-shadow:0 0 .75rem #cc884499;
+}
+
+table {
+/*TODO!*/	
+
+}
+td {
+text-overflow: ellipsis;
+}
+
+td.primary {
+	font-size:5rem;
+}
+
+table.splitview{
+	border-collapse: collapse;
+	width:100%;
+}
+table.splitview td.left {
+	border-bottom: .2rem solid GhostWhite;
+	padding:1rem;
+}
+table.splitview td.left > svg { /* such as the radial graph twidget */
+	width:18rem; height:18rem;
+	padding:0; margin: .025rem;
+}
+table.splitview td.right {
+	border: .2rem solid GhostWhite;
+	padding:1rem;
+	text-align: center;
+	font-size: 2.5rem;
+}
+
+button {
+    background-color: #321;
+    border: .1rem solid khaki;
+    border-radius: 1.25rem;
+    padding: .1rem 2rem .1rem 2rem;
+    padding: 0 2.15rem .25rem 2.15rem;
+    height: 3rem;
+    line-height: .1rem;
+    vertical-align: center;
+    /* margin-top: -.25rem; */
+    transform: scaley(1.25);
+    font-size: 3rem;
+    color: Gold;
+}
+button.simpler {
+	background-color: #321;
+	border-radius: 2rem;
+	border: .075rem solid LemonChiffon;
+	color: Gold;
+	font-size: 3.15rem;
+	/* padding: .1rem 2rem .1rem 2rem;*/
+	padding: 1.5rem 2rem 2rem 2.5rem;
+}
+
+span.proportiongram {
+	display:block;
+	height:1.75rem;
+	background-color: GhostWhite;
+}
+
+.minipill {
+    border: .1rem solid whitesmoke;
+    border-radius: .15rem;
+}
+
+.inversion {
+	color: black;
+	font-weight: bold;
+	background-color: Silver; 
+	padding-left:.6rem;
+	padding-right:.6rem;
+	border-radius: .08rem;
+}
+
+p.meterlabel {	/* tested working with <p>   e.g., SPEEDOMETER READING */
+	text-align:left; 
+	font-size:.75rem; 
+	word-spacing:.1rem; 
+	margin-left:2rem;
+}
+p.metric {
+	text-alight:right; 
+	font-size:10rem; 
+	margin:0;
+	padding:0 1rem 0 1rem;
+}
+
+.bargraph { /* this is aimed at horizontal "bar graphs" composed of repeating &block; or &marker; character entities */
+	text-align:right; 
+	padding:1.25rem 0 1.25rem 0; 
+	border:none; letter-spacing:0;
+}
+
+footer {
+	position:fixed;
+	bottom:0; left: 0;
+	width: 96vw;
+	border-top: .1rem solid GhostWhite;
+	margin: .5rem;
+	padding: .5rem;
+	font-size:1.25rem;
+}
+
+
+
+/*-  Effects  -*/
+
+
+.wipe-in-effect {
+  /* Initial state: hidden by clip-path */
+  clip-path: inset(0 100% 0 0); /* Hides the element to the right */
+  animation: wipeIn .5s ease-out forwards; /* Apply the animation */
+}
+@keyframes wipeIn {
+  to {
+    clip-path: inset(0 0 0 0); /* Fully reveal the element */
+  }
+}
+
+
+div.overlay {
+        position: fixed; /* Fixes the overlay to the viewport */
+        top: 0;
+        left: 0;
+        width: 100vw; /* Covers the full viewport width */
+        height: 100vh; /* Covers the full viewport height */
+        pointer-events: none; /* Allows interaction with content underneath */
+        z-index: 9999; /* Ensures it's on top of other elements */
+}
+
+div.vignette {
+        box-shadow: inset 0 0 7rem rgba(5, 3, 1, 1.0); /* Adjust values for desired effect */
+}
+
+.scanlines {
+    overflow: hidden;
+    position: relative;
+}
+.scanlines:before,
+.scanlines:after {
+    display: block;
+    pointer-events: none;
+    content: "";
+    position: absolute;
+}
+.scanlines:before {
+    width: 100%;
+    height: 2px;
+    z-index: 2147483649;
+    background: rgba(0, 0, 0, 0.3);
+    opacity: 0.75;
+    animation: scanline 6s linear infinite;
+}
+.scanlines:after {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 2147483648;
+    background: linear-gradient(
+        to bottom,
+        transparent 40%,
+        rgba(0, 0, 0, 0.1) 51%
+    );
+    background-size: 100% 4px;
+    animation: scanlines 42s steps(360) infinite;
+}
+
+/* ANIMATE UNIQUE SCANLINE */
+@keyframes scanline {
+    0% {
+        transform: translate3d(0, 200000%, 0);
+    }
+}
+@keyframes scanlines {
+    0% {
+        background-position: 0 50%;
+    }
+}
+div.scanlines {
+    position: absolute;
+pointer-events: none;
+}
+
+
+.animated-rotation {
+  animation-name: animateIntermittenRotation;
+  animation-duration: 35s; 
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out; /* or ease-in-out for smoother transitions */
+}
+@keyframes animateIntermittenRotation{
+  0% {
+    transform: rotate(0deg); /* Start at original position */
+  }
+  /* Rotate 45 degrees over 2 seconds */
+  2% { /* (2s / total duration) * 100% */
+    transform: rotate(45deg);
+  }
+  /* Pause 5 seconds */
+  7% { /* (2s + 5s) / total duration * 100% */
+    transform: rotate(45deg);
+  }
+  /* Rotate 15 degrees over 4 seconds (total 60 degrees) */
+  11% { /* (2s + 5s + 4s) / total duration * 100% */
+    transform: rotate(60deg);
+  }
+  /* Pause 2 seconds */
+  13% { /* (2s + 5s + 4s + 2s) / total duration * 100% */
+    transform: rotate(60deg);
+  }
+  /* Rotate 30 degrees in 3 seconds (total 90 degrees) */
+  16% { /* (2s + 5s + 4s + 2s + 3s) / total duration * 100% */
+    transform: rotate(90deg);
+  }
+  /* Pause 1 second */
+  17% { /* (2s + 5s + 4s + 2s + 3s + 1s) / total duration * 100% */
+    transform: rotate(90deg);
+  }
+  /* Rotate 30 degrees in 3 seconds (total 120 degrees) */
+  20% { /* (2s + 5s + 4s + 2s + 3s + 1s + 3s) / total duration * 100% */
+    transform: rotate(120deg);
+  }
+  /* Pause 1 second */
+  21% { /* (2s + 5s + 4s + 2s + 3s + 1s + 3s + 1s) / total duration * 100% */
+    transform: rotate(120deg);
+  }
+  /* Rotate 30 degrees in 2 seconds (total 150 degrees) */
+  23% { /* (2s + 5s + 4s + 2s + 3s + 1s + 3s + 1s + 2s) / total duration * 100% */
+    transform: rotate(150deg);
+  }
+  /* Pause 4 seconds */
+  27% { /* (2s + 5s + 4s + 2s + 3s + 1s + 3s + 1s + 2s + 4s) / total duration * 100% */
+    transform: rotate(150deg);
+  }
+  /* Finish rotation to original position in 6 seconds (total 0 degrees) */
+  33% { /* (2s + 5s + 4s + 2s + 3s + 1s + 3s + 1s + 2s + 4s + 6s) / total duration * 100% */
+    transform: rotate(360deg); /* or 0deg if starting from 0 and rotating back */
+  }
+  /* Pause 2 seconds */
+  35% { /* (2s + 5s + 4s + 2s + 3s + 1s + 3s + 1s + 2s + 4s + 6s + 2s) / total duration * 100% */
+    transform: rotate(360deg); /* or 0deg */
+  }
+  100% {
+    transform: rotate(360deg); /* Ensure it stays at 360deg (or 0deg) until the end of the cycle */
+  }
+}

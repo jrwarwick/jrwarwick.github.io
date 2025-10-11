@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- 
+Great thanks to HelloGames,
+and to https://rsms.me/inter/ 
+-->
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="manifest" href="./manifest.json">
+	<link rel="icon" href="./favicon.ico">
+	<link rel="preconnect" href="https://rsms.me/">
+	<link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+	<link rel="stylesheet" href="nms-mfd.css">
+	<title>NMS MFD</title>
+</head>
+<body>
+	<div class="scanlines overlay vignette"></div>
+	<header><a href="planetary.html">
+		<span class="datagram">  &marker; &block; &block; &block; &block; &block; &block;</span> <span class="datagram"> &block; &block; &block; &block; &block; &block;</span> <span class="datagram"> &block; &block; &block; &block; &block; &block;</span>
+	</a></header>
+	<main>
+		<h1>Radiant Pillar BC-1</h1>
+		<p>-123.45,+67.89</p>
+
+		<p>
+			<button>&ggg;</button>
+			<button class="simpler"> &rangle; &rangle; &rangle; </button>
+		</p>
+
+		<p>
+		<label for="shield">SHIELD</label>
+		<span class="proportiongram" id="shield" name="shield">_</span>
+		<!--
+		<input type="range" id="shield" name="shield" min="0" max="100" value="90" step="1" />
+		-->
+		</p>
+	</main>
+	<footer>16/16/16</footer>
+
+	<script>
+		document.getElementById("shield").style.width = "78%";
+
+/*
+		document.getElementsByTagName("header")[0].onclick = function(){ 
+			window.location.href = "planetary.html"; 
+		}
+*/
+	</script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- 
+Great thanks to HelloGames,
+and to https://rsms.me/inter/ 
+-->
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="manifest" href="./manifest.json">
+	<link rel="icon" href="./favicon.ico">
+	<link rel="preconnect" href="https://rsms.me/">
+	<link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+	<link rel="stylesheet" href="nms-mfd.css">
+		<style>
+			h1 {
+				margin:.5rem;
+			}
+			p.secondary {
+				float:right;
+				margin:.25em;
+			}
+		</style>
+	<title>NMS MFD - SCANNER</title>
+</head>
+
+<body>
+	<div class="scanlines overlay vignette"></div>
+	<header><a href="chronometer.html">
+		<span class="datagram">  &marker; &block; &block; &block; &block; &block;</span> <span class="datagram"> &block; &block; &block; &block; &block; &block;</span> <span class="datagram"> &block; &block; &block; &block; &block; &block;</span>
+	</a></header>
+	<main class="container">
+	<!-- TODO: indent these nearly center -->
+	<h1>Ubi Sumus</h1>
+	<p class="secondary"> [ T+<span id="stopwatch">03:23:52</span> ] </p>
+
+
+
+	<!-- TODO: carteasian polar coordinates of some kind of "pressure gradient thing" -->
+	<!-- TODO: signwave animation oscilloscopish -->
+
+<!--
+	<p>
+		<button>&ggg;</button>
+		<button>&rangle;&rangle;&rangle;</button>
+	</p>
+
+	<p>
+	<label for="shield">SHIELD</label>
+	<span class="proportiongram" id="shield" name="shield">_</span>
+	</p>
+	-->
+		<table class="splitview">
+			<tr>
+				<td class="left">
+
+	<svg class="animated-rotation" viewBox="0 0 100 100" version="1.1" id="svg2" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+		<circle cx="50" cy="50" r="48.154644" stroke="#f8f8ff" stroke-width="1.5" fill="none" id="circle1" />
+		<circle cx="50" cy="50" r="0.90289956" stroke="#f8f8ff" stroke-width="0.75" fill="none" id="circle2" />
+		<path id="path2"
+			 style="fill:none;fill-rule:evenodd;stroke:#777e99;stroke-width:20;stroke-linecap:butt;stroke-dasharray:none"
+			 d="M -17.803097,49.490948 A 32.563728,32.563728 0 0 1 -38.73757,79.907338 32.563728,32.563728 0 0 1 -74.624405,71.215731"
+			 transform="rotate(-90)" 
+		/>
+	</svg>
+
+				</td>
+				<td class="right">
+					SCANNER CHARGING
+					<p>&block;&block;&block;&block;&block;&block;&block;&block;  ||&vert;&mid;&marker;</p>
+				</td>
+			</tr>
+		</table>
+	</main>
+	<footer>&boxur; 16/16/16 &boxul;</footer>
+
+	<script>
+		//document.getElementById("shield").style.width = "78%";
+
+		const startTime = Date.now();
+
+		function updateStopwatch() {
+			      const elapsed = Date.now() - startTime;
+			      const hours = Math.floor(elapsed / 3600000);
+			      const minutes = Math.floor((elapsed % 3600000) / 60000);
+			      const seconds = Math.floor((elapsed % 60000) / 1000);
+
+			      const timeStr = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+			      document.getElementById('stopwatch').textContent = timeStr;
+		}
+		setInterval(updateStopwatch, 1000);
+
+	</script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<!-- 
+Great thanks to HelloGames,
+and to https://rsms.me/inter/ 
+-->
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="manifest" href="./manifest.json">
+	<link rel="icon" href="./favicon.ico">
+	<link rel="preconnect" href="https://rsms.me/">
+	<link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+	<link rel="stylesheet" href="nms-mfd.css">
+	<title>NMS MFD - SPEED</title>
+</head>
+
+<body class="wipe-in-effect">
+	<div class="scanlines overlay vignette"></div>
+<!-- TODO:
+header-only overlay: 
+linear-gradient(
+  to left,
+  #000000,
+  #eeeeee 17%,
+  #000000 33%,
+  #eeeeee 50%,
+  #000000 67%,
+  #eeeeee 85%,
+  #000000 100%
+);
+multiplied by alpha or brightness channel
+then figure a way to animate it rolling through
+-->
+	<header><a href="weapons.html">
+
+		<span class="datagram">  &marker; &block; &block; &block; &block; &block;</span> <span class="datagram"> &block; &block; &block; &block; &block; &block;</span> <span class="datagram"> &block; &block; &block; &block; &block; &block;</span>
+	</a></header>
+	<main>
+		<table style="border:none; border-collapse:collapse; width:100%;" border="2"> <!-- 3 columns and 4 rows, with some spanning -->
+			<tr>
+				<td style="width:25%; border-right:none; border-top:none; padding:.5rem; vertical-align:bottom;"> 
+					<!--
+					<span style="float:left; position:relative; top:0;left:0; margin:-7.5rem 0 0 -.75rem;">&blacksquare;</span>
+					-->
+					<span style="float:left; position:relative; top:0;left:0; margin:-7.5rem 0 0 -.9rem; font-size:4rem;">&dot; </span>
+					<p style="text-align:left; vertical-align:bottom; bottom:0; left:0; font-size:2.5rem; padding:0; margin-bottom:-.5rem;">
+						<button style="display:block;margin:.25rem .25rem -.25rem 1.5rem;">&ggg;</button> 
+						&lltri;
+					</p> 
+				</td>
+				<td style="text-align:right;"> 
+					<p class="meterlabel" suspend-tyle="text-align:left; font-size:.75rem; word-spacing:.1rem; margin-left:2rem;">SPEEDOMETER READING<!--PROXIMAL GRAVITATION 2.75uG--></p> 
+					<p class="metric" suspend-tyle="text-alight:right; font-size:10rem; margin:0;padding:0 1rem 0 1rem;">1000u/s</p> 
+				</td>
+			</tr>
+			<tr >
+				<!-- <td colspan="2" style=" padding:1.25rem 0 1.25rem .15rem; border:none; letter-spacing:0;">
+				-->
+				<td colspan="2" style="border:none;">
+					<p>
+						<span class="inversion" suspend-tyle="padding:0 .5rem 0 .6rem; font-weight:bold;">X</span>
+						<span class="bargraph" id="throttle">&block;&block;&block;&block;&block;&block;</span>
+					</p>
+					<p>
+						<span class="inversion" style="padding:0 .5rem 0 .6rem; font-weight:bold;">X</span>
+						<span class="bargraph" id="pulse-engine-fuel">&block;&block;&block;&block;&block;&block;&block;&block;&block;&block;&block;&block;</span>
+					</p>
+				</td>
+			</tr>
+		</table>
+	</main>
+	<footer></footer>
+
+	<script>
+		//document.getElementById("shield").style.width = "78%";
+
+	</script>
+</body>
+</html>

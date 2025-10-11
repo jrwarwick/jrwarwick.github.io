@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- 
+Great thanks to HelloGames,
+and to https://rsms.me/inter/ 
+-->
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="manifest" href="./manifest.json">
+	<link rel="icon" href="./favicon.ico">
+	<link rel="preconnect" href="https://rsms.me/">
+	<link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+	<link rel="stylesheet" href="nms-mfd.css">
+		<style>
+			h1 {
+				font-size:4rem;
+				margin:.5rem;
+				border-bottom: .175rem solid Gray;
+			}
+			h2 {
+				margin:.5rem;
+				text-align:right;
+			}
+			h3 {
+				margin:.5rem;
+				text-align:right;
+			}
+			p.secondary {
+				float:right;
+				margin:.25em;
+			}
+			tr > td:first-child {
+				padding:1.5rem 1rem .5rem 1rem;
+			}
+			td > svg.diagram {
+				width:22rem;
+				height:22rem;
+			}
+			tr > td:nth-child(2) {
+				display:flex; flex-direction:column; justify-content: space-between;
+			}
+		</style>
+	<title>NMS MFD - PLANETARY</title>
+</head>
+
+<body class="wipe-in-effect">
+	<div class="scanlines overlay vignette"></div>
+	<header><a href="propulsion.html">
+
+		<span class="datagram">  &marker; &block; &block; &block; &block; &block;</span> <span class="datagram"> &block; &block; &block; &block; &block; &block;</span> <span class="datagram"> &block; &block; &block; &block; &block; &block;</span>
+	</a></header>
+	<main>
+		<h1>Ubi Sumus</h1>
+
+	<!--
+		<p>
+			<button>&ggg;</button>
+			<button>&rangle;&rangle;&rangle;</button>
+		</p>
+
+		<p>
+		<label for="shield">SHIELD</label>
+		<span class="proportiongram" id="shield" name="shield">_</span>
+		</p>
+		-->
+		<table class="splitview">
+			<tr>
+				<td class="XXleft" style="text-align:center; ">
+<svg class="diagram" id="planetary_diagram" version="1.1" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <radialGradient id="radialGradient4568" cx="-31.643" cy="1.0051" r="48.155" gradientTransform="matrix(.96034 0 0 .96034 80.388 46.504)" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#dbe3e2" offset="0"/>
+   <stop stop-color="#dbe3e2" stop-opacity="0" offset="1"/>
+  </radialGradient>
+  <radialGradient id="radialGradient4568-2" cx="-31.643" cy="1.0051" r="48.155" gradientTransform="matrix(1.0117 0 0 .25734 82.014 87.349)" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#dbe3e2" stop-opacity="0" offset="0"/>
+   <stop stop-color="#dbe3e2" offset="1"/>
+  </radialGradient>
+ </defs>
+ <circle cx="50" cy="47.47" r="46.245" fill="none" stroke="#f8f8ff" stroke-width="1.6806"/>
+ <circle cx="50" cy="47.47" r=".68671" fill="none" stroke="#f8f8ff" stroke-width=".72025"/>
+ <circle id="surface-dimensional-shading" cx="50" cy="47.47" r="46.245" fill="url(#radialGradient4568)" opacity=".5"/>
+ <g stroke-width=".75">
+  <ellipse cx="50" cy="87.608" rx="48.72" ry="12.392" fill="url(#radialGradient4568-2)" opacity=".1" stroke="#f8f8ff"/>
+  <path d="m50.205 1.0051c-4.875 9.375-4.6265 79.143 0 92.277" fill="none" stroke="#dbe3e2" stroke-opacity=".15686"/>
+  <path d="m4.2976 46.702c9.375 4.875 79.143 4.6265 92.277 0" fill="none" stroke="#dbe3e2" stroke-opacity=".15686"/>
+ </g>
+</svg>
+					<div style="letter-spacing:0; float:right; position: relative; font-size:1rem; right:3rem;">
+						<p><span>&block;&block;&block;&block;</span></p>
+						<p>&nbsp;&nbsp;&block;&block;&block;&block;</p>
+						<p>&SquareSubset;&SquareSuperset;</p>
+					</div>
+				</td>
+				<td class="XXight" style="vertical-align:top; text-align:right;">
+					<div>
+						<h2>Traveller Nemo</h2>
+						<h2 title="Distance to planetary atmospheric entry point // planetary surface coordinates">8,000u</h2> 
+					</div>
+					<div style="text-align:left; font-size:.75rem; letter-spacing:0; border-top:.085rem solid silver; border-bottom: .085rem solid silver; padding:.4rem;">
+						<span class="minipill">&block;&block;&block;&block;&block;&block;</span>  [ T+<span id="stopwatch">03:23:52</span> ] ||&vert;&mid;
+					</div>
+				</td>
+			</tr>
+		</table>
+	</main>
+	<!--footer>&boxur; 16/16/16 &boxul;</footer-->
+
+	<script>
+		//document.getElementById("shield").style.width = "78%";
+
+		const startTime = Date.now();
+
+		function updateStopwatch() {
+			      const elapsed = Date.now() - startTime;
+			      const hours = Math.floor(elapsed / 3600000);
+			      const minutes = Math.floor((elapsed % 3600000) / 60000);
+			      const seconds = Math.floor((elapsed % 60000) / 1000);
+
+			      const timeStr = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+			      document.getElementById('stopwatch').textContent = timeStr;
+		}
+
+		updateStopwatch();
+		setInterval(updateStopwatch, 1000);
+
+	</script>
+</body>
+</html>

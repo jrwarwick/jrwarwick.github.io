@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- 
+Great thanks to HelloGames,
+and to https://rsms.me/inter/ 
+-->
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="manifest" href="./manifest.json">
+	<link rel="icon" href="./favicon.ico">
+	<link rel="preconnect" href="https://rsms.me/">
+	<link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+	<link rel="stylesheet" href="nms-mfd.css">
+	<title>NMS MFD - CHRONOMETER</title>
+</head>
+<body>
+	<div class="scanlines overlay vignette"></div>
+	<header><a href="cockpit.html">
+		<span class="datagram">&marker; &block; &block; &block; &block; &block; &block;</span><span class="datagram">&block; &block; &block; &block; &block; &block; &block;</span><span class="datagram">&block; &block; &block; &block; &block; &block; &block;</span>
+
+	</a></header>
+	<main>
+	<!-- TODO: indent these nearly center -->
+	<table style="width:90%">
+	<tr><td class="primary" id="clock"><00:00:00</td><td class="primary"> | </td><td class="primary" id="utc">00:00:00</td></tr>
+	</table>
+	<p>T+<span id="stopwatch">03:23:52</span></p>
+	<p>Relativistic Chrono-dilation gradient: nominal</p>
+	<p>Estimated absolute time:<br/> <span style="font-size:1.5rem;">
+			4.3545<span id="epoch">.</span>016016016E+26ns
+		<!--
+			maybe it turns out that 016016016 is the modulus of cosmic/simulation time clock which corresponds to the particular consiousness module subprocess that transfers the subset of information that is "knowledge" into consciousness/perception. I.e.,if you try to "look" at the "true" clock from within the simulation, your answer, by seeming cosmicly strange chance, always shows 016016016 in the final digits of the number. A quantization artifact that includes a simple and unmissable pattern. But it could be slightly misinterpreted.
+			435.001758815625sE+12s
+			4.35450001616160001758815625E+10^26ns
+			4.35451758815625<span id="epoch">.</span>E+10^26ns
+			4.3545<span id="epoch">.</span>E+10^26ns
+			4.35451758815625016016016E+10^26ns
+			4.3545<span id="epoch">.</span>016016016E+26ns
+			Probably would be even cooler to go further with this into planck units.
+		-->
+	</span></p>
+	<!--p>Observable absolute time:<br/> <span style="font-size:1.5rem;">4.3545000161616000<span id="epoch">.</span>E+10^26ns</span></p-->
+
+	<!-- TODO: carteasian polar coordinates of some kind of "pressure gradient thing" -->
+
+<!--
+	<p>
+		<button>&ggg;</button>
+		<button>&rangle;&rangle;&rangle;</button>
+	</p>
+
+	<p>
+	<label for="shield">SHIELD</label>
+	<span class="proportiongram" id="shield" name="shield">_</span>
+	</p>
+-->
+	</main>
+	<footer>__  16/16/16</footer>
+
+	<script>
+		//document.getElementById("shield").style.width = "78%";
+
+		const startTime = Date.now();
+
+		function updateClock() {
+		    const now = new Date();
+		    const time = now.toLocaleTimeString('en-US', {hour12: false});
+				const utc = now.toLocaleTimeString('en-US', {hour12: false, timeZone: 'UTC'});
+		    //document.getElementById('clock').textContent = time + " | " + utc;
+		    document.getElementById('clock').textContent = time;
+				document.getElementById('utc').textContent = utc;
+		}
+		
+		function updateStopwatch() {
+		    const elapsed = Date.now() - startTime;
+		    const hours = Math.floor(elapsed / 3600000);
+		    const minutes = Math.floor((elapsed % 3600000) / 60000);
+		    const seconds = Math.floor((elapsed % 60000) / 1000);
+		    
+		    const timeStr = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+		    document.getElementById('stopwatch').textContent = timeStr;
+		}
+		
+		function updateEpoch() {
+		    const epoch = Math.floor(Date.now() / 1000);
+		    document.getElementById('epoch').textContent = epoch;
+		}
+
+		updateClock();
+		updateStopwatch();
+		updateEpoch();
+		setInterval(updateClock, 1000);
+		setInterval(updateStopwatch, 1000);
+		setInterval(updateEpoch, 1000);
+
+/*
+		document.getElementsByTagName("header")[0].onclick = function(){
+			window.location.href="cockpit.html";
+		}
+*/
+	</script>
+</body>
+</html>

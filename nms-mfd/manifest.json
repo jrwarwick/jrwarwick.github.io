@@ -1,0 +1,16 @@
+{
+  "name": "No Man's Sky Multi-Function Display",
+  "short_name": "NMS-MFD",
+  "theme_color": "#b01710",
+  "background_color": "#000000",
+  "display": "fullscreen",
+  "scope": "./",
+  "start_url": "./cockpit.html",
+  "icons": [
+	{
+	      "src": "android-chrome-icon-512x512.png",
+	      "sizes": "512x512",
+	      "type": "image/png"
+	}
+  ]
+}
